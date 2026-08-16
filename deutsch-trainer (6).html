@@ -1,0 +1,1100 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abfahrt — German for the trip</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --board:#0F1214;
+  --flap:#1A1F23;
+  --flap-hi:#252B30;
+  --paper:#E7E6E1;
+  --paper-2:#DEDDD7;
+  --ink:#12151A;
+  --muted:#6B7076;
+  --red:#EC0016;
+  --blue:#00518C;
+  --gelb:#F5C400;
+  --line:rgba(18,21,26,.14);
+  --sans:"Barlow Condensed",'Arial Narrow',system-ui,sans-serif;
+  --serif:"Newsreader",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--serif);
+  font-size:17px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:600px;margin:0 auto;padding:0 0 96px}
+
+/* ---------- the board (signature) ---------- */
+.board{
+  background:var(--board);
+  color:#fff;
+  padding:18px 18px 16px;
+  position:sticky;top:0;z-index:20;
+  box-shadow:0 10px 24px -18px #000;
+}
+.board-top{
+  display:flex;align-items:baseline;justify-content:space-between;
+  font-family:var(--sans);text-transform:uppercase;letter-spacing:.16em;
+  font-size:12px;color:#8A9299;
+}
+.board-top .dot{color:var(--gelb)}
+.flaps{display:flex;gap:3px;margin:10px 0 4px;flex-wrap:wrap}
+.flap{
+  background:var(--flap);
+  border-top:1px solid var(--flap-hi);
+  border-radius:3px;
+  font-family:var(--sans);font-weight:600;font-size:29px;line-height:1;
+  padding:9px 6px 8px;min-width:26px;text-align:center;
+  color:#F2F4F5;
+  position:relative;
+  animation:flip .28s ease both;
+}
+.flap::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(0,0,0,.45)}
+.flap.sp{background:transparent;min-width:9px}
+@keyframes flip{from{transform:rotateX(-88deg);opacity:0}to{transform:rotateX(0);opacity:1}}
+@media (prefers-reduced-motion:reduce){.flap{animation:none}}
+.board-sub{font-family:var(--mono);font-size:11.5px;color:#79808A;letter-spacing:.04em}
+.bar{height:3px;background:#242A2F;border-radius:2px;margin-top:12px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--gelb);transition:width .4s ease}
+
+/* ---------- nav ---------- */
+nav{
+  display:flex;gap:0;background:var(--board);
+  position:sticky;top:0;z-index:19;
+  border-top:1px solid #23282C;
+}
+nav button{
+  flex:1;background:none;border:0;color:#79808A;
+  font-family:var(--sans);text-transform:uppercase;letter-spacing:.07em;
+  font-size:11.5px;font-weight:600;padding:11px 1px 12px;cursor:pointer;
+  border-bottom:2px solid transparent;white-space:nowrap;
+}
+nav button[aria-current="true"]{color:#fff;border-bottom-color:var(--red)}
+nav button:focus-visible{outline:2px solid var(--gelb);outline-offset:-3px}
+
+main{padding:22px 18px 0}
+
+/* ---------- gleis rows ---------- */
+.gleis{
+  display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;
+  width:100%;text-align:left;background:none;border:0;cursor:pointer;
+  padding:14px 2px;border-bottom:1px solid var(--line);
+  font:inherit;color:inherit;
+}
+.gleis:hover .g-de{text-decoration:underline;text-underline-offset:3px}
+.gleis:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.g-num{
+  font-family:var(--sans);font-weight:700;font-size:26px;
+  color:#fff;background:var(--blue);border-radius:3px;
+  text-align:center;padding:5px 0 4px;line-height:1;
+}
+.g-num.zero{background:var(--red)}
+.g-de{font-family:var(--sans);font-weight:600;font-size:23px;letter-spacing:.01em;line-height:1.1}
+.g-en{font-size:14px;color:var(--muted);font-style:italic}
+.g-pct{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap}
+
+/* ---------- headings / prose ---------- */
+h2{font-family:var(--sans);font-weight:600;font-size:30px;letter-spacing:.01em;margin:6px 0 2px;line-height:1.1}
+h3{font-family:var(--sans);font-weight:600;font-size:19px;text-transform:uppercase;letter-spacing:.1em;margin:30px 0 8px}
+.lede{color:var(--muted);font-size:15px;margin:0 0 18px}
+p{margin:0 0 14px}
+
+/* ---------- card ---------- */
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:4px;
+  overflow:hidden;margin-bottom:14px;
+}
+.card-sign{
+  background:var(--blue);color:#fff;padding:16px 18px 14px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.card-sign.warn{background:var(--red)}
+.card-sign.say{background:#1F4D3D}
+.de{font-family:var(--sans);font-weight:600;font-size:31px;line-height:1.08;letter-spacing:.01em}
+.speak{
+  background:rgba(255,255,255,.14);border:0;color:#fff;border-radius:50%;
+  width:38px;height:38px;flex:0 0 38px;cursor:pointer;font-size:16px;
+}
+.speak:hover{background:rgba(255,255,255,.26)}
+.speak:focus-visible{outline:2px solid var(--gelb)}
+.card-body{padding:14px 18px 16px}
+.lit{font-family:var(--mono);font-size:13.5px;color:var(--muted);margin-bottom:8px}
+.lit b{color:var(--ink);font-weight:500}
+.means{font-size:18px;margin-bottom:12px}
+.parts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.part{
+  font-family:var(--mono);font-size:12px;background:var(--paper-2);
+  padding:4px 8px;border-radius:3px;
+}
+.part b{font-weight:500}
+.note{font-size:14.5px;color:#3E4348;border-left:2px solid var(--gelb);padding-left:11px;font-style:italic}
+.ex{margin:0 0 13px;padding:11px 52px 11px 13px;background:var(--paper-2);border-radius:3px;cursor:pointer;position:relative}
+.ex:hover{background:#D9D8D1}
+.ex.now{background:rgba(245,196,0,.22);box-shadow:inset 3px 0 0 var(--gelb)}
+.ex-play{
+  position:absolute;right:11px;top:50%;transform:translateY(-50%);
+  background:var(--ink);color:#fff;border:0;border-radius:50%;
+  width:33px;height:33px;font-size:13px;cursor:pointer;line-height:1;
+}
+.ex-play:hover{background:var(--blue)}
+.ex-play:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.ex-de{font-family:var(--sans);font-weight:500;font-size:19px;line-height:1.25}
+.ex-en{font-size:14px;color:var(--muted);font-style:italic;margin-top:4px}
+.dl{padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.dwho{font-family:var(--sans);text-transform:uppercase;letter-spacing:.11em;font-size:11px;color:var(--muted);margin-bottom:3px}
+.dde{font-family:var(--sans);font-weight:500;font-size:19.5px;line-height:1.3}
+.den{display:none;font-size:14.5px;color:#3E4348;font-style:italic;margin-top:4px}
+.dl.open .den,body.showall .den{display:block}
+.scene{font-style:italic;color:var(--muted);font-size:15px;margin:0 0 6px}
+.dl.now{background:rgba(245,196,0,.18);box-shadow:inset 3px 0 0 var(--gelb);padding-left:11px}
+.vhint{font-size:13px;color:var(--muted);font-style:italic;margin:-4px 0 14px}
+.rel{margin:14px 0 0;border-top:1px solid var(--line);padding-top:11px}
+.rel-h{font-family:var(--sans);text-transform:uppercase;letter-spacing:.11em;font-size:11px;color:var(--muted);margin-bottom:7px}
+.rel ul{margin:0;padding-left:17px}
+.rel li{font-size:15px;margin-bottom:5px;line-height:1.45}
+.rel b{font-family:var(--sans);font-weight:600;font-size:17px;letter-spacing:.01em}
+.hidden-until{filter:blur(5px);cursor:pointer;user-select:none}
+
+/* ---------- toolkit ---------- */
+table{border-collapse:collapse;width:100%;font-size:14.5px;margin:0 0 16px}
+th,td{border-bottom:1px solid var(--line);padding:7px 8px 7px 0;text-align:left;vertical-align:top}
+th{font-family:var(--sans);text-transform:uppercase;letter-spacing:.09em;font-size:12px;color:var(--muted);font-weight:600}
+td b{font-family:var(--sans);font-size:17px;font-weight:600}
+.shift{font-family:var(--mono);font-size:13.5px}
+
+/* ---------- quiz ---------- */
+.prompt{
+  background:var(--board);color:#fff;border-radius:4px;
+  padding:22px 18px;text-align:center;margin-bottom:16px;
+}
+.prompt .q-de{font-family:var(--sans);font-weight:600;font-size:34px;line-height:1.1}
+.prompt .q-sit{font-size:17px;font-style:italic;color:#C9CED2}
+.prompt .q-tag{font-family:var(--sans);text-transform:uppercase;letter-spacing:.15em;font-size:11px;color:#79808A;margin-bottom:8px}
+.opt{
+  display:block;width:100%;text-align:left;font:inherit;color:inherit;
+  background:#fff;border:1px solid var(--line);border-radius:3px;
+  padding:12px 14px;margin-bottom:8px;cursor:pointer;
+}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.opt.right{background:#E4F0E8;border-color:#2E7D52}
+.opt.wrong{background:#FBE6E7;border-color:var(--red)}
+.opt:disabled{cursor:default}
+.feedback{margin:14px 0 0;padding:14px;background:#fff;border:1px solid var(--line);border-radius:3px}
+.score{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:right;margin-bottom:10px}
+
+/* ---------- buttons ---------- */
+.btn{
+  font-family:var(--sans);text-transform:uppercase;letter-spacing:.11em;
+  font-weight:600;font-size:14px;padding:11px 18px;border-radius:3px;
+  border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;
+}
+.btn.ghost{background:none;color:var(--ink)}
+.btn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 8px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.chip{
+  font-family:var(--sans);font-size:14px;letter-spacing:.04em;padding:6px 11px;
+  border:1px solid var(--line);border-radius:99px;background:#fff;cursor:pointer;
+}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.pager{
+  position:fixed;left:0;right:0;bottom:0;background:var(--paper);
+  border-top:1px solid var(--line);padding:10px 18px;
+  display:flex;gap:8px;align-items:center;justify-content:space-between;
+  max-width:600px;margin:0 auto;
+}
+.pager .count{font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+/* ---------- pocket card / print ---------- */
+.zettel{column-count:2;column-gap:22px;font-size:13px}
+.zettel div{break-inside:avoid;margin-bottom:7px}
+.zettel b{font-family:var(--sans);font-size:15px;font-weight:600}
+.zettel i{color:var(--muted);font-size:11.5px;font-family:var(--mono);font-style:normal}
+@media print{
+  nav,.board,.pager,.row,.no-print{display:none!important}
+  body{background:#fff;font-size:11px}
+  .wrap{max-width:none;padding:0}
+  main{padding:0}
+  .zettel{column-count:3}
+}
+@media (max-width:400px){
+  .de{font-size:26px}
+  .flap{font-size:24px;min-width:22px}
+}
+</style>
+
+<div class="wrap">
+
+<div class="board" id="board">
+  <div class="board-top"><span>Abfahrt</span><span class="dot">●</span><span id="countdown"></span></div>
+  <div class="flaps" id="flaps"></div>
+  <div class="board-sub" id="boardsub">Berlin · Oberwesel · Köln · Baden-Baden · München</div>
+  <div class="bar"><i id="progbar" style="width:0%"></i></div>
+</div>
+
+<nav>
+  <button data-view="home" aria-current="true">Gleise</button>
+  <button data-view="learn">Lernen</button>
+  <button data-view="quiz">Quiz</button>
+  <button data-view="decode">Zerlegen</button>
+  <button data-view="dialog">Dialoge</button>
+  <button data-view="zettel">Zettel</button>
+</nav>
+
+<main id="main"></main>
+</div>
+
+<script>
+/* ============================================================
+   DECK.  Each entry: d German · l literal · e meaning
+   p parts ["chunk=gloss"] · n note · s situation prompt (speakable)
+   ============================================================ */
+const UNITS = [
+{de:"Werkzeug", en:"The decoder ring", kind:"tools", cards:[]},
+
+{de:"Höflichkeit", en:"Courtesy & people", cards:[
+ {d:"bitte",x:"Ein Kaffee, bitte. — Zwei Euro achtzig, bitte.=A coffee, please. — Two eighty, please. (Both are bitte.)",l:"I beg",e:"please / you're welcome / here you go / pardon?",p:["bitten=to request"],n:"The hardest-working word in German. Said alone with a rising tone it means “sorry, what?” Handed to you with your change, it means “there you go.”",s:"Soften any request, or answer someone's thanks."},
+ {d:"danke",l:"I think (of you)",e:"thanks",p:["danken=to thank","Gedanke=thought"],n:"Same root as English think/thank. Careful: offered food or drink, a bare “danke” often reads as “no thanks.” Say bitte to accept."},
+ {d:"danke schön",l:"thanks prettily",e:"thank you very much",p:["schön=beautiful"],n:"",r:["bitte schön=the standard reply, “you're welcome”"]},
+ {d:"Entschuldigung",x:"Entschuldigung, ist dieser Platz frei?=Excuse me, is this seat free?",l:"un-guilting",e:"excuse me / sorry",p:["ent-=un-, de-","Schuld=guilt, debt","-ung=noun ending"],n:"Schuld is both guilt and debt — the same word does moral and financial work. Use this to start any question to a stranger.",s:"Get a stranger's attention."},
+ {d:"Guten Tag",l:"good day",e:"hello (daytime)",p:["gut=good","Tag=day"],n:"Tag ↔ day: German t where English has d."},
+ {d:"Guten Morgen / Guten Abend",l:"good morning / good evening",e:"hello (morning / evening)",p:["Abend=evening"],n:"Abend ↔ even(ing)."},
+ {d:"Grüß Gott",l:"greet God",e:"hello — Bavaria & Austria",p:["grüßen=to greet","Gott=God"],n:"Short for “may God greet you.” In Munich and Salzburg this is the normal hello; Guten Tag marks you as a northerner or a foreigner.",s:"Walk into a shop in Munich."},
+ {d:"Servus",l:"servant",e:"hi / bye — Bavaria & Austria",p:["Latin servus=slave, servant"],n:"Literally “(I am your) servant,” the same origin as Italian ciao. Works coming and going, informal."},
+ {d:"Auf Wiedersehen",l:"on seeing-again",e:"goodbye",p:["wieder=again","sehen=to see"],n:"",r:["auf Wiederhören=goodbye on the phone, “on hearing-again”"]},
+ {d:"Tschüss",l:"—",e:"bye (casual)",p:[],n:"Worn down from adieu/adiós through Low German. Fine with shop staff, waiters, hotel desks."},
+ {d:"Ja / Nein / Genau",l:"yes / no / exactly",e:"yes / no / exactly, right",p:["genau=precise"],n:"Genau is the German uh-huh. You will hear it constantly."},
+ {d:"Sprechen Sie Englisch?",x:"Entschuldigung, sprechen Sie Englisch? Mein Deutsch ist nicht gut.=Excuse me, do you speak English? My German isn't good.",l:"speak you English",e:"Do you speak English?",p:["sprechen=to speak","Sie=you (formal)"],n:"Open with Entschuldigung first. Asking in German buys enormous goodwill even when the answer is a fluent yes.",s:"You've run out of German."},
+ {d:"Ich spreche nur ein bisschen Deutsch",l:"I speak only a little-bit German",e:"I only speak a little German",p:["nur=only","ein bisschen=a bit"],n:"bisschen is a diminutive of Bissen, “a bite” — a nibble of a thing.",s:"Set expectations before someone answers at full speed."},
+ {d:"Ich verstehe nicht",x:"Es tut mir leid, ich verstehe nicht.=I'm sorry, I don't understand.",l:"I understand not",e:"I don't understand",p:["ver-=intensifier","stehen=to stand","nicht=not"],n:"Understand is literally “stand-under” in English and ver-stehen in German — the same odd metaphor twice.",s:"You've lost the thread."},
+ {d:"Langsamer, bitte",l:"slower, please",e:"More slowly, please",p:["langsam=slow","-er=comparative"],n:"langsam = lang (long) + -sam. Doing something “in a long way.”",s:"They're talking too fast."},
+ {d:"Können Sie das wiederholen?",x:"Können Sie das bitte wiederholen? Ich habe es nicht gehört.=Could you repeat that please? I didn't catch it.",l:"can you that again-fetch",e:"Could you repeat that?",p:["wieder=again","holen=to fetch"],n:"Repeat is “fetch again” — much easier to remember than the Latin.",s:"You missed it entirely."},
+ {d:"Wie viel kostet das?",x:"Wie viel kostet das zusammen?=How much is that altogether?",l:"how much costs that",e:"How much does that cost?",p:["wie=how","viel=much"],n:"",s:"Ask a price."},
+ {d:"Ich hätte gern …",x:"Ich hätte gern ein Stück Kuchen und einen Kaffee.=I'd like a slice of cake and a coffee.",l:"I would-have gladly",e:"I'd like …",p:["hätte=would have","gern=gladly"],n:"The politest way to order anything.",r:["Ich möchte …=I would like …, equally polite"],s:"Order or request anything."},
+ {d:"Wo ist …?",l:"where is",e:"Where is …?",p:["wo=where"],n:"",s:"Find something."},
+ {d:"Sie / du",l:"you (formal) / you (familiar)",e:"the two yous",p:["Sie=always capitalised"],n:"Use Sie with every adult stranger for the whole trip. You will not be wrong. du is for children, friends, and — oddly — climbers and hikers."},
+ {d:"eins zwei drei vier fünf",l:"one two three four five",e:"1–5",p:[],n:"drei ↔ three, zwei ↔ two: German z where English has t or th."},
+ {d:"sechs sieben acht neun zehn",l:"six seven eight nine ten",e:"6–10",p:[],n:"acht ↔ eight, zehn ↔ ten."},
+ {d:"einundzwanzig",x:"Das macht einundzwanzig Euro fünfzig.=That comes to €21.50.",l:"one-and-twenty",e:"21",p:["und=and","zwanzig=twenty"],n:"German says the small digit first, like the English nursery rhyme “four and twenty blackbirds.” 47 = siebenundvierzig, seven-and-forty. This is the single most common place travellers mishear a price."},
+ {d:"Hilfe!",l:"help",e:"Help!",p:["helfen=to help"],n:"helfen ↔ help: German f where English has p."}
+]},
+
+{de:"Schilder", en:"Signs & the street", cards:[
+ {d:"Ausgang / Eingang",l:"out-going / in-going",e:"exit / entrance",p:["aus=out","ein=in","Gang=a going"],n:"Gang is the noun of gehen, to go — same root as English gangway and gangplank. Learn this pair and half of German signage falls open."},
+ {d:"Notausgang",x:"Notausgang — bitte freihalten.=Emergency exit — please keep clear.",l:"distress-out-going",e:"emergency exit",p:["Not=need, distress","aus=out","Gang=going"],n:"Not is a straight cognate of English need. It marks everything urgent.",r:["Notruf=emergency call","Notdienst=out-of-hours emergency service","Notfall=an emergency","Notbremse=emergency brake"]},
+ {d:"Drücken / Ziehen",l:"press / pull",e:"push / pull (doors)",p:["drücken=to press","ziehen=to pull"],n:"",r:["Zug=a train, literally “a pull”","Aufzug=elevator, an “up-pull”","Umzug=a move house, or a parade"]},
+ {d:"Geöffnet / Geschlossen",x:"Montags geschlossen. Dienstag bis Sonntag von zehn bis achtzehn Uhr geöffnet.=Closed Mondays. Open Tuesday to Sunday, 10:00 to 18:00.",l:"opened / closed",e:"open / closed",p:["offen=open","schließen=to close"],n:"",r:["Schlüssel=a key, literally “the closer”","Schluss=the end, the close","Anschluss=a connection, a “closing-onto”","Schließfach=a locker"]},
+ {d:"Achtung",l:"heeding",e:"attention, watch out",p:["achten=to heed"],n:"Same root as English “to take heed.”"},
+ {d:"Vorsicht",x:"Vorsicht, Stufe!=Careful, step!",l:"fore-sight",e:"caution",p:["vor=before","Sicht=sight"],n:"Vorsicht is the softer, standing warning; Achtung is the sharp one.",r:["Vorsicht Stufe=mind the step","Vorsicht, Zug=beware of the train"]},
+ {d:"Verboten",l:"forbidden",e:"forbidden",p:["ver-=away, wrongly","bieten=to bid, offer"],n:"Literally “bidden away.” Same shape as English forbid."},
+ {d:"Betreten verboten",x:"Privatgrundstück — Betreten verboten.=Private property — no entry.",l:"treading forbidden",e:"keep out / no entry",p:["betreten=to step on","treten=to tread"],n:"treten ↔ tread."},
+ {d:"Kein Zutritt",l:"no step-to",e:"no admittance",p:["kein=no, none","zu=to","Tritt=a step"],n:"Kein is the word for “no” before a noun; nicht is “not” for everything else."},
+ {d:"Baustelle",x:"Baustelle — bitte der Umleitung folgen.=Construction site — please follow the detour.",l:"build-site",e:"construction site",p:["bauen=to build","Stelle=place, spot"],n:"You will meet a lot of these.",r:["Umleitung=the detour a Baustelle usually causes"]},
+ {d:"Umleitung",x:"Wegen Bauarbeiten: Umleitung über die Hauptstraße.=Because of construction work: detour via the Hauptstraße.",l:"around-leading",e:"detour, diversion",p:["um=around","leiten=to lead","-ung=noun"],n:"um- is the “around / re-” prefix.",r:["umsteigen=to change trains, the most useful word in this deck","Umfahrung=a bypass road around a town","Umgebung=the surrounding area"]},
+ {d:"Einbahnstraße",l:"one-track-street",e:"one-way street",p:["ein=one","Bahn=track, path","Straße=street"],n:"Bahn is any running track.",r:["Autobahn=motorway, “car-path”","Eisenbahn=railway, “iron-path”","Bahnhof=station, “track-yard”","Straßenbahn=tram, “street-track”"]},
+ {d:"Fußgängerzone",l:"foot-goer zone",e:"pedestrian zone",p:["Fuß=foot","Gänger=goer","Zone=zone"],n:"Fuß ↔ foot. German s/ß where English has t — the same shift in Wasser/water, besser/better."},
+ {d:"Sackgasse",l:"sack alley",e:"dead end, cul-de-sac",p:["Sack=sack, bag","Gasse=alley"],n:"A street shaped like a bag.",r:["Gasse=a narrow lane, everywhere in Oberwesel and Salzburg","Weg=a way, a path","Allee=a tree-lined avenue"]},
+ {d:"Rathaus",l:"council house",e:"town hall",p:["Rat=advice, council","Haus=house"],n:"No rats. Rat is the same word as English “read” in its old sense of counsel — as in Ethelred the Unready, “ill-counselled.” Every town centre has one and it's usually the prettiest building."},
+ {d:"Krankenhaus",l:"sick-house",e:"hospital",p:["krank=sick","Haus=house"],n:"",r:["Krankenwagen=ambulance, “sick-wagon”","Notaufnahme=emergency room, “distress-intake”","krank=sick, ill"]},
+ {d:"Apotheke",l:"storehouse",e:"pharmacy",p:["Greek apothēkē=storehouse"],n:"The only place to buy real medicine, painkillers included. Look for the red gothic A.",r:["Drogerie=toiletries and vitamins, no actual medicine","Notdienst=the after-hours pharmacy, posted on the door","rezeptfrei=available without a prescription"]},
+ {d:"Damen / Herren",l:"ladies / gentlemen",e:"women's / men's toilets",p:["Dame=lady","Herr=gentleman, Mr"],n:"Sometimes just D and H — which is the moment to remember that Herren is the one with the H.",r:["Toilette / WC=what the door itself usually says","Herr=gentleman, and also Mr","Dame=lady","besetzt / frei=occupied / vacant"]},
+ {d:"Kasse",x:"Bitte an der Kasse bezahlen.=Please pay at the till.",l:"cash box",e:"checkout, till, ticket desk",p:["Italian cassa=box"],n:"Museums use the same word for the ticket window.",r:["Bitte an der Kasse zahlen=please pay at the till","Kassenbon=the receipt","Tageskasse=the box office on the day"]},
+ {d:"Nur Bargeld",x:"Wir nehmen leider nur Bargeld.=Unfortunately we only take cash.",l:"only bare-money",e:"cash only",p:["nur=only","bar=bare, ready","Geld=money"],n:"Bar as in “bare cash, money in hand.” Germany still means it — carry euros, especially in bakeries, small cafés, and Oberwesel."},
+ {d:"Geldautomat",l:"money-automaton",e:"ATM",p:["Geld=money","Automat=machine"],n:"-automat marks any machine that serves you without a person involved.",r:["Fahrkartenautomat=ticket machine","Getränkeautomat=drinks machine","Pfandautomat=bottle-return machine"]},
+ {d:"Aufzug",l:"up-pull",e:"elevator",p:["auf=up","Zug=pull"],n:"In an opera programme the same word means an act — the pulling-up of the curtain. You'll meet it again on the 29th.",r:["Fahrstuhl=elevator, a “travel-chair”","Treppe=stairs","Rolltreppe=escalator, “rolling stairs”"]},
+ {d:"Erdgeschoss",x:"Das Frühstück ist im Erdgeschoss, Ihr Zimmer im zweiten Stock.=Breakfast is on the ground floor, your room on the second (American third).",l:"earth-storey",e:"ground floor",p:["Erde=earth","Geschoss=storey"],n:"Marked E or 0 in lifts. The German 1. Stock is the American second floor — worth knowing before you haul a suitcase up to it.",r:["1. Stock=the floor above the ground floor","Untergeschoss (UG)=basement level","Dachgeschoss=top floor, “roof-storey”"]},
+ {d:"Eintritt frei",l:"in-step free",e:"free admission",p:["ein=in","Tritt=step","frei=free"],n:"Eintritt is the price of stepping in."},
+ {d:"Ausverkauft",x:"Die Vorstellung am Samstag ist leider ausverkauft.=Saturday's performance is unfortunately sold out.",l:"out-sold",e:"sold out",p:["aus=out","verkaufen=to sell"],n:"kaufen ↔ cheap, via Old English cēap, a bargain — as in Cheapside."},
+ {d:"Selbstbedienung",l:"self-serving",e:"self-service",p:["selbst=self","dienen=to serve"],n:"Abbreviated SB. Means nobody is coming to your table."},
+ {d:"Radweg",l:"wheel-way",e:"bike lane",p:["Rad=wheel","Weg=way"],n:"Do not stand in the Radweg. Berliners will let you know.",r:["Fahrrad=bicycle, a “travel-wheel”","Gehweg=footpath, “go-way”","Fahrradstraße=a street where bikes have priority"]},
+ {d:"Ausfahrt",l:"out-drive",e:"exit (for vehicles), motorway exit",p:["aus=out","fahren=to travel by vehicle"],n:"fahren is travel with wheels; gehen is on foot. That distinction runs through the whole language."}
+]},
+
+{de:"Die Bahn", en:"Trains & platforms", cards:[
+ {d:"Bahnhof",x:"Der Bus fährt vom Hauptbahnhof ab.=The bus leaves from the main station.",l:"track-yard",e:"train station",p:["Bahn=track, path","Hof=yard, court"],n:"Hof is an enclosed yard — the same word as in Hofbräuhaus.",r:["Hauptbahnhof (Hbf)=the main station, “head-station”","Bahnhofsvorplatz=the square out front","Busbahnhof (ZOB)=the bus station"]},
+ {d:"Gleis",x:"Der Zug nach Köln fährt heute von Gleis elf ab.=The train to Cologne departs from platform 11 today.",l:"track",e:"platform / track number",p:["Gleis=rail track"],n:"Your ticket and the boards say Gleis 7. This is the number you sprint toward.",r:["Gleiswechsel=track change, the announcement to dread","Gleis 7a / 7b=two halves of one long platform","Abschnitt A–F=the lettered sections along a platform"]},
+ {d:"Bahnsteig",l:"track-climb",e:"platform",p:["Bahn=track","steigen=to climb"],n:"steigen carries the entire boarding vocabulary on its back.",r:["einsteigen=to board","aussteigen=to get off","umsteigen=to change trains","zusteigen=to board partway along the route"]},
+ {d:"Abfahrt / Ankunft",x:"Abfahrt vierzehn Uhr zwölf, Ankunft sechzehn Uhr fünfundvierzig.=Departure 14:12, arrival 16:45.",l:"off-drive / on-coming",e:"departure / arrival",p:["ab=off, away","an=on, at","fahren=to travel","Kunft=a coming"],n:"Yellow poster = Abfahrt, white = Ankunft. Kunft is an old noun of kommen, and it turns up all over a station.",r:["Auskunft=information desk, an “out-coming”","Unterkunft=lodging, an “under-coming”","Zukunft=the future, a “coming-toward”","Herkunft=origin, where a thing comes from"]},
+ {d:"Verspätung",x:"Der Zug hat etwa zwanzig Minuten Verspätung.=The train is about twenty minutes late.",l:"belatedness",e:"delay",p:["ver-=making into","spät=late","-ung=noun"],n:"Der Zug hat 20 Minuten Verspätung. You will hear this sentence. Possibly often."},
+ {d:"fällt aus",x:"Der Regionalexpress nach Koblenz fällt heute aus.=The regional express to Koblenz is cancelled today.",l:"falls out",e:"is cancelled",p:["aus=out","fallen=to fall"],n:"The worst two words on the board. It means find another train.",r:["ausfallen=to be cancelled","Zugausfall=a cancellation","Ersatzverkehr=the replacement bus you now need"]},
+ {d:"umsteigen",x:"Sie müssen in Mainz umsteigen.=You'll have to change trains in Mainz.",l:"to climb around",e:"to change trains",p:["um=around","steigen=to climb"],n:"The keystone word for a five-leg trip. In Oberwesel and Baden-Baden you will almost certainly umsteigen somewhere."},
+ {d:"einsteigen / aussteigen",l:"climb in / climb out",e:"to board / to get off",p:["ein=in","aus=out"],n:"Same prefixes as Eingang and Ausgang, so you already know them.",r:["Bitte einsteigen!=all aboard","Einstieg / Ausstieg=the boarding point / the exit point","Vorsicht beim Aussteigen=mind the gap getting off"]},
+ {d:"Anschluss",x:"Der Anschluss in Koblenz ist gesichert.=The connection in Koblenz will be held.",l:"closing-onto",e:"connection (onward train)",p:["an=onto","schließen=to close, join"],n:"verpassen is literally “to let pass.”",r:["Anschluss verpasst=missed the connection","Anschlusszug=the onward train","Anschluss gesichert=the connection will be held"]},
+ {d:"Schienenersatzverkehr (SEV)",l:"rail-replacement-traffic",e:"replacement bus service",p:["Schiene=rail","Ersatz=replacement","Verkehr=traffic"],n:"Four nouns welded together, and now you can read all of it. It means your train is a bus today. Ersatz came into English intact."},
+ {d:"Fahrkarte / Fahrschein",l:"travel-card / travel-slip",e:"ticket",p:["fahren=to travel","Karte=card","Schein=slip, certificate"],n:"Schein also means a banknote and, separately, a shine or appearance."},
+ {d:"Fahrkartenautomat",l:"travel-card-machine",e:"ticket machine",p:["Fahrkarte","-n-=linking","Automat=machine"],n:"Read compounds right to left: it's an Automat, for Karten, for Fahren. The last noun is always the thing itself."},
+ {d:"Fahrplan",l:"travel-plan",e:"timetable",p:["Plan=plan"],n:"",r:["Fahrplanänderung=timetable change","Fahrplanauskunft=timetable information","Sonderfahrplan=special timetable, often during works"]},
+ {d:"entwerten",x:"Bitte entwerten Sie Ihre Fahrkarte vor der Fahrt.=Please validate your ticket before travelling.",l:"to de-value",e:"to validate / stamp a ticket",p:["ent-=de-, un-","Wert=value"],n:"A genuine trap. It looks like “devalue” and it is — you're cancelling the ticket's unused value by stamping it. On regional trains and trams, an unstamped ticket is no ticket."},
+ {d:"gültig",x:"Diese Karte ist nur heute gültig.=This ticket is valid today only.",l:"valid",e:"valid",p:["gelten=to be valid, to count"],n:"",r:["gültig bis=valid until","nicht gültig=you have a problem","Gültigkeit=the period of validity"]},
+ {d:"Zug / Wagen / Abteil",l:"pull / wagon / compartment",e:"train / carriage / compartment",p:["ziehen=to pull"],n:"Your reservation says Wagen 12, Platz 44 — carriage 12, seat 44."},
+ {d:"Richtung",x:"Nehmen Sie die U8 Richtung Wittenau.=Take the U8 towards Wittenau.",l:"aiming",e:"direction, bound for",p:["richten=to aim, direct"],n:"On platform signs: Richtung Alexanderplatz. Tells you which way the train is pointed — the single most useful word on a U-Bahn platform."},
+ {d:"Nächster Halt",x:"Nächster Halt: Rosenthaler Platz.=Next stop: Rosenthaler Platz.",l:"next stop",e:"next stop",p:["nächst=nearest, next","halten=to hold, stop"],n:"halten ↔ hold. A stop is where the train holds.",r:["Haltestelle=a stop, a “holding place”","Bedarfshalt=request stop, you must press the button","Endhaltestelle=the last stop"]},
+ {d:"Endstation",l:"end-station",e:"final stop, end of the line",p:["Ende=end"],n:"Time to get off.",r:["Zug endet hier=this train terminates here","Alles aussteigen=everybody off"]},
+ {d:"Zurückbleiben, bitte!",l:"to stay back, please",e:"Stand back, please!",p:["zurück=back","bleiben=to stay"],n:"The Berlin U-Bahn's signature announcement as the doors close. bleiben ↔ (a)bide."},
+ {d:"Ausstieg rechts",l:"out-climb right",e:"exit on the right",p:["Ausstieg=the getting-off","rechts=right"],n:"rechts also means “correct” — the same instinct as English right.",r:["links=left","rechts=right","in Fahrtrichtung=facing the direction of travel"]},
+ {d:"Türen schließen selbsttätig",l:"doors close self-actingly",e:"doors close automatically",p:["Tür=door","selbst=self","tätig=acting"],n:"Tür ↔ door. On many regional trains you must press a button to open the door yourself — it will not open for you."},
+ {d:"Sitzplatz / Reservierung",x:"Ich habe eine Reservierung: Wagen zwölf, Platz vierundvierzig.=I have a reservation: carriage 12, seat 44.",l:"sit-place / reserving",e:"seat / reservation",p:["sitzen=to sit","Platz=place"],n:"A seat is a “sitting place.”",r:["Stehplatz=standing place","Wagen 12, Platz 44=carriage 12, seat 44","ggf. freigeben=release the seat if the holder turns up"]},
+ {d:"Zuschlag",l:"to-strike, add-on",e:"surcharge",p:["zu=to","Schlag=a blow, stroke"],n:"Something struck onto the price. ICE trains can carry one on regional tickets."},
+ {d:"S-Bahn / U-Bahn",l:"city-fast-track / under-track",e:"suburban rail / subway",p:["Stadtschnellbahn=city-fast-rail","Untergrundbahn=under-ground-rail"],n:"S is green, U is blue. Berlin runs both and the same ticket usually covers them."}
+]},
+
+{de:"Essen & Zahlen", en:"Eating & paying", cards:[
+ {d:"Speisekarte",x:"Könnten wir bitte die Speisekarte haben?=Could we have the menu, please?",l:"food-card",e:"menu",p:["Speise=food, dish","Karte=card"],n:"Ask for die Speisekarte. Das Menü will get you something else entirely.",r:["Menü=a fixed multi-course set meal","Getränkekarte=the drinks list","Tageskarte=today's short menu"],s:"Ask for the menu."},
+ {d:"Frühstück",l:"early-piece",e:"breakfast",p:["früh=early","Stück=piece"],n:"The first piece of the day. Compare English “break-fast,” which describes the same moment completely differently."},
+ {d:"Mittagessen / Abendessen",l:"midday-eating / evening-eating",e:"lunch / dinner",p:["Mittag=midday","Abend=evening","Essen=eating, food"],n:"essen ↔ eat. Mittag is literally mid-day."},
+ {d:"Vorspeise / Hauptgericht / Nachtisch",l:"fore-dish / head-dish / after-table",e:"starter / main / dessert",p:["vor=before","Haupt=head, chief","Gericht=dish","nach=after","Tisch=table"],n:"Dessert is “after-table” — what arrives once the meal proper has been cleared.",r:["Haupt-=the chief one of anything","Hauptstraße=the main street","Hauptbahnhof=the main station"]},
+ {d:"Beilage",l:"by-laying",e:"side dish",p:["bei=by, alongside","legen=to lay"],n:"What's laid beside the main thing."},
+ {d:"Tagesgericht",l:"day-dish",e:"today's special",p:["Tag=day","Gericht=dish"],n:"Usually the best value on the board, chalked outside."},
+ {d:"Die Rechnung, bitte",x:"Entschuldigung, die Rechnung bitte.=Excuse me, the bill please.",l:"the reckoning, please",e:"The bill, please",p:["rechnen=to reckon, calculate"],n:"Same word as English reckoning. Nobody will bring it unasked — in Germany that would be rushing you out.",s:"You're ready to leave the restaurant."},
+ {d:"Zahlen, bitte",l:"to pay, please",e:"I'd like to pay",p:["zahlen=to pay","Zahl=number"],n:"Shorter and very common.",r:["zählen=to count, one umlaut away from paying","bezahlen=to pay for something","Zahl=a number"],s:"Catch the waiter's eye to settle up."},
+ {d:"Zusammen oder getrennt?",x:"Zusammen oder getrennt? — Zusammen, bitte.=Together or separate? — Together, please.",l:"together or separated",e:"One bill or separate?",p:["zusammen=together","trennen=to separate"],n:"You will be asked this every time. Answer: zusammen or getrennt.",s:"Answer the waiter's question about the bill."},
+ {d:"Trinkgeld",l:"drink-money",e:"tip",p:["trinken=to drink","Geld=money"],n:"Money for the server's drink. Round up 5–10% and say the total you want as you hand over the money — don't leave coins on the table."},
+ {d:"Stimmt so",x:"Das macht achtzehn Euro vierzig. — Zwanzig, stimmt so.=That's €18.40. — Twenty, keep the change.",l:"(it) is right so",e:"Keep the change",p:["stimmen=to be correct","so=so, thus"],n:"The cleanest way to tip. Or say the rounded number: “Neun Euro, bitte” for a €8.20 bill.",s:"Tip when paying cash."},
+ {d:"Leitungswasser",x:"Könnte ich bitte ein Leitungswasser haben?=Could I have a tap water, please?",l:"pipe-water",e:"tap water",p:["Leitung=conduit, line","Wasser=water"],n:"leiten = to lead, so a Leitung is anything that leads — pipe, cable, or the management of a company. Ordering tap water in a restaurant is unusual and sometimes refused; bottled Wasser is the norm."},
+ {d:"mit Kohlensäure / still",l:"with coal-acid / still",e:"sparkling / still water",p:["Kohle=coal","Säure=acid"],n:"Carbonic acid, spelled out. “Ein Wasser” by default arrives fizzy."},
+ {d:"Ein Bier, bitte",l:"one beer, please",e:"A beer, please",p:["Bier=beer"],n:"In Munich you order a beer by its name rather than its size.",r:["ein Helles=the pale lager you probably want","eine Maß=a full litre","ein Weißbier=wheat beer","eine Schorle=juice or wine cut with sparkling water"],s:"Order a drink."},
+ {d:"Pfand",x:"Auf die Flasche sind fünfundzwanzig Cent Pfand.=There's a 25-cent deposit on the bottle.",l:"pledge",e:"bottle deposit",p:["Pfand=pledge, security"],n:"The same idea as a pawn: you're leaving a pledge on the bottle.",r:["Pfandautomat=the bottle-return machine in any supermarket","Mehrweg=refillable","Einweg=single use, and still carries Pfand"]},
+ {d:"Zum Mitnehmen",x:"Hier oder zum Mitnehmen? — Zum Mitnehmen, bitte.=For here or to go? — To go, please.",l:"for taking-with",e:"to go, takeaway",p:["mit=with","nehmen=to take"],n:"",r:["Hier oder zum Mitnehmen?=for here or to go?","zum Hieressen=to eat in"],s:"You want your coffee to go."},
+ {d:"Ich nehme …",l:"I take",e:"I'll have …",p:["nehmen=to take"],n:"Point at the menu and say it. Perfectly polite.",s:"Order your food."},
+ {d:"Ich esse kein Fleisch",x:"Ich esse kein Fleisch. Haben Sie etwas Vegetarisches?=I don't eat meat. Do you have something vegetarian?",l:"I eat no flesh",e:"I don't eat meat",p:["Fleisch=flesh","kein=no"],n:"Fleisch ↔ flesh. German names its meats straight after the animal, with none of the Norman-French layer that gave English mutton and pork.",r:["Schweinefleisch=pork, “swine-flesh”","Rindfleisch=beef, “cattle-flesh”","Hähnchen=chicken, “little rooster”","fleischlos=meat-free"],s:"Flag a dietary restriction."},
+ {d:"Brötchen",l:"little bread",e:"bread roll",p:["Brot=bread","-chen=diminutive"],n:"-chen shrinks any noun and turns it neuter, which is why Mädchen, “little maid,” is grammatically an it.",r:["Semmel=the Bavarian and Austrian word for a roll","Mädchen=girl, “little maid”","Häuschen=a little house"]},
+ {d:"Warme Küche",x:"Warme Küche bis einundzwanzig Uhr.=Hot food served until 21:00.",l:"warm kitchen",e:"hot food served (until …)",p:["warm=warm","Küche=kitchen"],n:"Warme Küche bis 21 Uhr means the kitchen stops cooking at nine. Outside those hours you get cold plates only."},
+ {d:"Stammtisch",l:"trunk-table",e:"the regulars' table",p:["Stamm=trunk, tribe","Tisch=table"],n:"Stamm is a tree trunk and a tribe — the same root as English stem. Marked with a little flag or sign. Don't sit there."},
+ {d:"Guten Appetit / Prost",l:"good appetite / may it be of use",e:"enjoy your meal / cheers",p:["Latin prosit=may it benefit"],n:"With Prost, look people in the eye as you clink. Germans notice.",s:"Raise a glass, or start a meal."}
+]},
+
+{de:"Hotel & Hilfe", en:"Hotels, directions, trouble", cards:[
+ {d:"Ich habe eine Reservierung",x:"Guten Tag, ich habe eine Reservierung für zwei Nächte.=Hello, I have a reservation for two nights.",l:"I have a reservation",e:"I have a reservation",p:["haben=to have"],n:"Then your name. This is the entire check-in conversation, most of the time.",s:"Arrive at the hotel."},
+ {d:"Anmeldung",l:"on-reporting",e:"reception, registration",p:["an=on, to","melden=to report"],n:"melden is to report — this is the desk where you report in.",r:["Rezeption=reception, the same desk","anmelden=to register, to check in","Meldung=a report, a news item"]},
+ {d:"Einzelzimmer / Doppelzimmer",l:"single-room / double-room",e:"single / double room",p:["einzeln=single","doppelt=double","Zimmer=room"],n:"Zimmer ↔ timber — a room was once the wooden structure. German z where English has t, again."},
+ {d:"Schlüssel / Schlüsselkarte",l:"closer / closer-card",e:"key / key card",p:["schließen=to close"],n:"The key is “the thing that closes.” German named it for locking up; English named it for opening."},
+ {d:"Handtuch",l:"hand-cloth",e:"towel",p:["Hand=hand","Tuch=cloth"],n:"",r:["Taschentuch=tissue, “pocket-cloth”","Geschirrtuch=tea towel, “dish-cloth”","Tasche=a pocket, or a bag"]},
+ {d:"Kurtaxe",x:"Die Kurtaxe beträgt drei Euro fünfzig pro Person und Nacht.=The spa tax is €3.50 per person per night.",l:"cure-tax",e:"spa / tourist tax",p:["Kur=cure, spa treatment","Taxe=fee"],n:"Charged per night in spa towns, Baden-Baden certainly. Ask what it entitles you to — it is usually more than people realise.",r:["Kurkarte=the card it buys you, often with free local transport","Kurhaus=the spa town's grand social building","Kurpark=the spa gardens"]},
+ {d:"Gepäck",l:"packed-stuff",e:"luggage",p:["ge-=collective prefix","packen=to pack"],n:"ge- plus a verb makes a collective noun — all the things of that kind, taken together.",r:["Gebäude=a building, “the built things”","Gebirge=a mountain range, “the mountains together”","Handgepäck=carry-on, “hand-luggage”"]},
+ {d:"Kann ich mein Gepäck hier lassen?",x:"Kann ich mein Gepäck bis fünf Uhr hier lassen?=Can I leave my luggage here until five?",l:"can I my luggage here leave",e:"Can I leave my luggage here?",p:["lassen=to let, leave"],n:"Useful on a checkout day when the train isn't until six.",r:["Gepäckaufbewahrung=left-luggage office, “luggage-keeping”","Schließfach=a locker","Gepäckwagen=a luggage trolley"],s:"You've checked out but your train is hours away."},
+ {d:"Ab wann gibt es Frühstück?",l:"from when gives it breakfast",e:"When does breakfast start?",p:["ab=from","wann=when","es gibt=there is"],n:"es gibt literally means “it gives” — the German way of saying there is."},
+ {d:"Wie komme ich zum Bahnhof?",x:"Wie komme ich zum Bahnhof? — Immer geradeaus, dann links.=How do I get to the station? — Straight on, then left.",l:"how come I to-the station",e:"How do I get to the station?",p:["kommen=to come","zum=to the"],n:"Swap in any destination. zum before masculine/neuter, zur before feminine — nobody will mind if you get it wrong.",s:"Ask for directions."},
+ {d:"links / rechts / geradeaus",l:"left / right / straight-out",e:"left / right / straight ahead",p:["gerade=straight","aus=out"],n:"The three answers you'll actually receive. Learn to recognise them even if you never say them."},
+ {d:"gegenüber",l:"against-over",e:"opposite, across from",p:["gegen=against","über=over"],n:"Gegenüber dem Rathaus = across from the town hall."},
+ {d:"Wo ist die nächste Apotheke?",l:"where is the nearest pharmacy",e:"Where's the nearest pharmacy?",p:["nächst=nearest"],n:"nächste does double duty: nearest and next.",s:"You need medicine."},
+ {d:"zu Fuß",l:"on foot",e:"on foot, walking",p:["zu=at, to","Fuß=foot"],n:"Zu Fuß, zehn Minuten = ten minutes on foot."},
+ {d:"Es tut mir leid",l:"it does me sorrow",e:"I'm sorry",p:["tun=to do","Leid=sorrow, suffering"],n:"For genuine apology. Entschuldigung is for bumping into someone; this is for something that mattered."},
+ {d:"Ich habe mich verlaufen",x:"Ich glaube, ich habe mich verlaufen.=I think I've gotten lost.",l:"I have myself mis-walked",e:"I'm lost",p:["ver-=astray, wrongly","laufen=to run, walk"],n:"That ver- prefix means “off course.”",r:["verfahren=lost while driving","versprechen=to misspeak","verpassen=to miss a train"],s:"You've lost your way in an old town."},
+ {d:"Notruf 112",l:"distress-call 112",e:"emergency number 112",p:["Not=distress","Ruf=call"],n:"112 works across the whole EU for ambulance and fire.",r:["110=police","Notaufnahme=emergency room","Notdienst=the out-of-hours doctor or pharmacy"]}
+]},
+
+{de:"Therme & Oper", en:"Baden-Baden & the opera", cards:[
+ {d:"Therme",l:"warm springs",e:"thermal baths",p:["Greek thermē=heat"],n:"Baden-Baden's whole reason for existing — the town's name is just “Baths-Baths,” the second one distinguishing it from other Badens."},
+ {d:"Textilfrei",x:"Der Saunabereich im ersten Stock ist textilfrei.=The sauna area on the first floor is textile-free.",l:"textile-free",e:"nude area — no swimwear",p:["Textil=textile","frei=free"],n:"Not a suggestion and not a red-light thing — it's the normal, mixed, entirely matter-of-fact rule in German spa culture. Know the word before you walk through the door."},
+ {d:"Badekleidung erforderlich",l:"bathing-clothing required",e:"swimwear required",p:["baden=to bathe","Kleidung=clothing","erforderlich=required"],n:"The opposite sign. Larger complexes have both zones, so read the doorway."},
+ {d:"Umkleide",l:"around-clothing",e:"changing room",p:["um=around","kleiden=to clothe"],n:"",r:["Umkleidekabine=a changing cabin","Garderobe=where you leave coats, including at the opera"]},
+ {d:"Schließfach",l:"closing-compartment",e:"locker",p:["schließen=to close","Fach=compartment, subject"],n:"Fach is any compartment, including a field of study.",r:["Fachmann=a specialist, a “compartment man”","Postfach=a PO box","Abteil=a train compartment"]},
+ {d:"Aufguss",l:"on-pouring",e:"sauna steam ritual",p:["auf=on","gießen=to pour"],n:"Water poured on the hot stones at a fixed time, often with a towel show. People arrive on schedule for it; latecomers are not let in."},
+ {d:"Ruhebereich",x:"Im Ruhebereich bitte nicht sprechen.=Please don't talk in the quiet room.",l:"rest-area",e:"quiet room",p:["Ruhe=rest, quiet","Bereich=area"],n:"Silence is enforced socially, and firmly.",r:["Ruhe!=quiet!","Ruhetag=the day a business is closed","Nachtruhe=the legally quiet hours at night"]},
+ {d:"Handtuchpflicht",x:"In der Sauna gilt Handtuchpflicht.=Towels are compulsory in the sauna.",l:"towel-duty",e:"towel required (sit on it)",p:["Handtuch=towel","Pflicht=duty"],n:"No bare skin on the wood.",r:["-pflicht=turns any noun into an obligation","Anschnallpflicht=seatbelts required","Ausweispflicht=ID required"]},
+ {d:"Barfuß",l:"bare-foot",e:"barefoot",p:["bar=bare","Fuß=foot"],n:"",r:["Bargeld=cash, “bare money”","barfuß laufen=to go barefoot"]},
+ {d:"Garderobe",l:"guard-robe",e:"cloakroom, coat check",p:["French garde-robe"],n:"At German opera houses this is effectively mandatory — you don't take a coat or a large bag to your seat. Budget five minutes each way; the queue at the end is real."},
+ {d:"Einlass",x:"Einlass ab achtzehn Uhr dreißig, Beginn neunzehn Uhr.=Doors from 18:30, curtain at 19:00.",l:"in-letting",e:"admission, doors open",p:["ein=in","lassen=to let"],n:"They mean it, and Wagner won't wait.",r:["Einlass 18:30=doors at 6:30","Kein Einlass nach Beginn=no entry after curtain","Beginn=the start time"]},
+ {d:"Aufzug",l:"up-pull",e:"act (of an opera)",p:["auf=up","ziehen=to pull"],n:"The pulling-up of the curtain. Siegfried runs three of them.",r:["Erster Aufzug=Act One, not the lift","Szene=scene","Vorhang=the curtain itself"]},
+ {d:"Pause",x:"Nach dem zweiten Aufzug gibt es eine Pause von fünfundzwanzig Minuten.=After the second act there's a twenty-five minute interval.",l:"pause",e:"interval, intermission",p:["Pause=pause"],n:"Long and civilised — usually 25–35 minutes, with drinks you can pre-order and find waiting for you."},
+ {d:"Parkett / Rang / Loge",l:"parquet / rank / box",e:"stalls / tier / box",p:["Rang=rank, tier"],n:"Parkett is the flat floor, named for its wooden parquet.",r:["Erster Rang=the first tier up","Loge=a box","Stehplatz=standing place, cheap and entirely real"]},
+ {d:"Reihe / Platz",l:"row / place",e:"row / seat",p:["Reihe=row","Platz=place"],n:"Your ticket reads Reihe 12, Platz 7."},
+ {d:"Vorstellung",x:"Die Vorstellung dauert etwa fünf Stunden mit zwei Pausen.=The performance runs about five hours with two intervals.",l:"placing-before",e:"performance",p:["vor=before","stellen=to place"],n:"What is placed before an audience.",r:["Ich habe keine Vorstellung=I have no idea","vorstellen=to introduce, or to imagine","Aufführung=a performance, a “carrying-out”"]},
+ {d:"Grüß Gott / Servus / Pfiat di",l:"greet God / servant / God keep you",e:"southern hellos and goodbyes",p:["Pfiat di=behüte dich Gott"],n:"Bavaria and Salzburg. Pfiat di is a worn-down “may God protect you” — you'll hear it as a goodbye."},
+ {d:"Semmel / Erdäpfel / Sackerl",l:"roll / earth-apples / little sack",e:"Austrian words for roll, potatoes, bag",p:["Erde=earth","Apfel=apple","-erl=Austrian diminutive"],n:"Salzburg vocabulary. Potatoes as “earth-apples” — exactly like French pommes de terre. Austrians shrink everything with -erl where Germans use -chen."},
+ {d:"Weißwurst / Brezn / Maß",l:"white sausage / pretzel / measure",e:"Bavarian breakfast, and a litre of beer",p:["weiß=white","Wurst=sausage","Maß=measure"],n:"Weißwurst is traditionally eaten before noon. A Maß is a full litre — order eine Maß only if you mean it."}
+]},
+
+{de:"Siegfried", en:"Wagner, 29 October", intro:"None of this is travel German — nobody says <i>Weib</i> or <i>Ross</i> in a bakery. But Wagner deliberately stripped the Latin and French out of the Ring and built the libretto from the oldest Germanic roots he could find, in alliterative verse. That is what makes it sound archaic to Germans, and it is the same thing that makes it unusually transparent to you: this is the exact layer of vocabulary that survived in English too. The house runs surtitles in German and English, so you are reading along, not translating.", cards:[
+ {d:"Nothung",l:"the needful one",e:"the name of Siegfried's sword",p:["Not=need, distress","-ung=noun ending"],n:"The same Not you already know from Notausgang and Notruf. Wagner named the hero's sword the way a station names a fire exit: the thing you reach for in extremity.",x:"Nothung! Nothung! Neidliches Schwert!=Nothung! Nothung! Coveted sword! (Act 1, the forging song)",r:["Not=need, distress","Notausgang=emergency exit","neidlich=coveted, envied"]},
+ {d:"das Fürchten lernen",l:"to learn the fearing",e:"to learn what fear is",p:["Furcht=fear","lernen=to learn"],n:"The spine of the whole opera. Siegfried has never felt fear and goes looking for it — through a dragon, and finally finds it in front of a sleeping woman. Furcht ↔ English fright.",x:"Ich will das Fürchten lernen.=I want to learn what fearing is.",r:["Furcht=fear","furchtbar=terrible, “fear-bearing”","fürchten=to fear"]},
+ {d:"Schwert",l:"sword",e:"sword",p:["Schwert=sword"],n:"A straight cognate. Act 1 is essentially ninety minutes about reforging one.",x:"Aus den Stücken schmiedet er das Schwert neu.=From the shards he forges the sword anew.",r:["Stücke=pieces, shards","Klinge=the blade"]},
+ {d:"schmieden",l:"to forge",e:"to forge",p:["Schmied=smith"],n:"Schmied ↔ smith, by the same th↔d rule that gives you drei and Bruder. Siegfried does on stage what Mime cannot.",x:"Er schmiedet das Schwert selbst.=He forges the sword himself.",r:["Schmied=a smith","Schmiede=a forge, a smithy","Waffenschmied=weaponsmith"]},
+ {d:"Amboss",l:"the beaten-on",e:"anvil",p:["an-=on","bôzan=to beat (Old High German)"],n:"German named it “the thing beaten on.” English arrived at the identical idea from different roots — anvil is an- plus a lost verb meaning to strike. Two languages describing the same object by the same logic. Siegfried splits one with the finished sword.",x:"Der Amboss zerspringt unter dem Schlag.=The anvil splits apart under the blow.",r:["Schlag=a blow, a stroke","Hammer=hammer"]},
+ {d:"der Wurm",l:"the worm",e:"the dragon",p:["Wurm=worm, serpent"],n:"Wagner's word for Fafner. It is a true cognate of worm — and Old English wyrm meant exactly this too, the dragon in Beowulf. English kept the sound and shrank the meaning; German kept both.",x:"Der Wurm bewacht den Hort in der Höhle.=The dragon guards the hoard in the cave.",r:["Lindwurm=a wingless dragon","Drache=dragon, the ordinary modern word"]},
+ {d:"der Hort",l:"the hoard",e:"the treasure hoard",p:["Hort=hoard, store"],n:"Hort ↔ hoard, directly. In modern German it has softened into a shelter or a refuge — and, oddly, an after-school club.",x:"Fafner bewacht den Hort der Nibelungen.=Fafner guards the Nibelungs' hoard.",r:["Schatz=treasure, and also a term of endearment","Gold=gold"]},
+ {d:"die Neidhöhle",l:"envy-cave",e:"Fafner's lair",p:["Neid=envy, malice","Höhle=cave"],n:"Wagner's place names are compounds you can now read cold. A cave named for what the treasure in it does to people.",x:"Vor der Neidhöhle wartet der Wanderer.=Before the envy-cave the Wanderer waits.",r:["Neid=envy","Höhle=cave","neidisch=envious"]},
+ {d:"der Zwerg",l:"dwarf",e:"dwarf",p:["Zwerg=dwarf"],n:"Cognate with dwarf, with the consonants shuffled. Mime and Alberich are both Nibelungen — the smith-dwarves of the underworld.",x:"Mime ist ein Zwerg und ein Schmied.=Mime is a dwarf and a smith.",r:["Nibelung=one of the dwarf race","Riese=a giant","Gott=a god"]},
+ {d:"der Wanderer",l:"the wanderer",e:"the Wanderer — Wotan in disguise",p:["wandern=to roam, to hike"],n:"The god demoted to a traveller with a hat and a spear. The same verb gives you the Wanderweg signs you will follow along the Rhine at Oberwesel.",x:"Der Wanderer stellt drei Fragen.=The Wanderer asks three questions.",r:["wandern=to hike","Wanderweg=a hiking trail","Wanderung=a hike"]},
+ {d:"der Speer",l:"spear",e:"spear",p:["Speer=spear"],n:"Wotan's, carved with the treaties that hold his power. Siegfried shatters it in Act 3, which is the moment the old order actually ends.",x:"Der Speer zerbricht am Schwert.=The spear breaks against the sword.",r:["Runen=runes, the carved treaties","Verträge=treaties, contracts"]},
+ {d:"der Wald",l:"forest",e:"forest",p:["Wald=forest"],n:"Cognate with English weald and wold — the Weald of Kent, the Cotswolds. English kept the word only in place names; German kept it for the thing itself. The whole of Act 2 happens in one.",x:"Im Wald hört Siegfried den Vogel.=In the forest Siegfried hears the bird.",r:["Waldweben=“forest weaving,” the Act 2 orchestral passage","Schwarzwald=the Black Forest, where you'll be"]},
+ {d:"der Waldvogel",l:"forest-bird",e:"the woodbird",p:["Wald=forest","Vogel=bird"],n:"After the dragon's blood touches his lips, Siegfried can suddenly understand it. Vogel ↔ fowl — English narrowed that one to poultry.",x:"Der Waldvogel zeigt ihm den Weg.=The woodbird shows him the way.",r:["Vogel=bird","Vogelgesang=birdsong"]},
+ {d:"der Fels",l:"crag",e:"rock, crag",p:["Fels=rock, cliff"],n:"Brünnhilde's rock, ringed with fire since the end of Die Walküre. No English cognate — but you will see it on Rhine signage all week, since Oberwesel sits below a great many of them.",x:"Auf dem Fels schläft die Walküre.=On the crag the Valkyrie sleeps.",r:["Loreley=the famous Rhine rock, an hour from Oberwesel","Felsen=rocks, cliffs"]},
+ {d:"das Feuer",l:"fire",e:"fire",p:["Feuer=fire"],n:"Loge's fire, which only someone who has never learned fear can walk through. Feuer ↔ fire, and the p→f shift you already know is not even needed here.",x:"Nur wer keine Furcht kennt, geht durch das Feuer.=Only one who knows no fear walks through the fire.",r:["Feuerzeug=a cigarette lighter, “fire-gear”","Feuerwehr=fire brigade, “fire-defence”"]},
+ {d:"der Held",l:"hero",e:"hero",p:["Held=hero"],n:"No English cognate — English borrowed hero from Greek and left its own word to die. German kept the native one, which is why it sounds heavier.",x:"Ein Held ohne Furcht.=A hero without fear.",r:["Heldentenor=the heavy tenor voice the role demands","heldenhaft=heroic"]},
+ {d:"das Blut",l:"blood",e:"blood",p:["Blut=blood"],n:"Blut ↔ blood. The dragon's blood on his tongue is what opens the birdsong to him — an old motif Wagner took from the Norse sagas.",x:"Das Blut des Wurms brennt ihm die Hand.=The dragon's blood burns his hand.",r:["Blutbruder=blood brother","bluten=to bleed"]},
+ {d:"das Herz",l:"heart",e:"heart",p:["Herz=heart"],n:"Herz ↔ heart, by the t↔z rule from the decoder ring — the same shift as Wasser and zwei.",x:"Sein Herz kennt keine Furcht.=His heart knows no fear.",r:["herzlich=warm, cordial","Herzschlag=heartbeat"]},
+ {d:"erwachen",l:"to awaken",e:"to wake, to awaken",p:["er-=inceptive prefix","wachen=to be awake"],n:"Act 3. Brünnhilde has been asleep since the end of the previous opera, and her first words on waking are a greeting to the sun.",x:"Heil dir, Sonne! Heil dir, Licht!=Hail to you, sun! Hail to you, light! (Act 3)",r:["wecken=to wake someone","Wecker=an alarm clock, “the waker”","aufwachen=to wake up"]},
+ {d:"die Sonne",l:"sun",e:"sun",p:["Sonne=sun"],n:"Sonne ↔ sun. Brünnhilde greets the sun, the light, and the shining day before she says anything to the man who woke her — which tells you something about the scene.",x:"Lange Schlaf — nun scheint die Sonne.=Long sleep — now the sun shines.",r:["Licht=light","Tag=day","sonnig=sunny"]},
+ {d:"die Braut",l:"bride",e:"bride",p:["Braut=bride"],n:"Braut ↔ bride, unchanged in a thousand years.",x:"Er weckt die Braut mit einem Kuss.=He wakes the bride with a kiss.",r:["Bräutigam=bridegroom","Hochzeit=wedding, “high time”"]},
+ {d:"das Weib",l:"woman",e:"woman, wife — archaic",p:["Weib=woman"],n:"Weib ↔ wife. Standard in Wagner, and thoroughly insulting in modern German. Read it in the surtitles; do not use it in Munich.",x:"Das ist kein Mann.=That is no man. (Siegfried, seeing her)",r:["Frau=woman, the normal modern word","Mann=man"]},
+ {d:"die Wonne",l:"bliss",e:"bliss, delight",p:["Wonne=joy, bliss"],n:"Related to the old English wynn, joy — which survives only inside winsome. One of Wagner's favourite words and almost extinct in ordinary speech.",x:"Wonne und Furcht zugleich.=Bliss and fear at once.",r:["wonnig=blissful","Freude=joy, the everyday word"]},
+ {d:"das Leid",l:"sorrow",e:"sorrow, suffering",p:["Leid=sorrow"],n:"Cognate with English loath, which kept the hostility and dropped the grief. You already met it in Es tut mir leid — “it does me sorrow.”",x:"Aus Leid wird Wonne.=Out of sorrow comes bliss.",r:["Es tut mir leid=I'm sorry","leiden=to suffer","Mitleid=compassion, “with-suffering”"]},
+ {d:"der Tod",l:"death",e:"death",p:["Tod=death"],n:"Tod ↔ death, th↔d again. Fafner's dying speech in Act 2 is the moment the opera briefly stops being a fairy tale.",x:"Der Wurm spricht im Tod.=The dragon speaks as he dies.",r:["tot=dead","töten=to kill","sterben=to die"]},
+ {d:"das Ross",l:"steed",e:"horse, steed",p:["Ross=steed"],n:"Ross ↔ horse, with the consonants swapped around. The poetic word; a horse in a field is a Pferd.",x:"Das Ross schläft neben ihr.=The steed sleeps beside her.",r:["Pferd=horse, the ordinary word","Grane=Brünnhilde's horse"]},
+ {d:"Erda",l:"the earth one",e:"Erda, the earth goddess",p:["Erde=earth"],n:"Wotan wakes her in Act 3 to ask what he already knows. Erde ↔ earth, and Erdgeschoss — the ground floor — is the same word doing municipal work.",x:"Erda kennt das Ende der Götter.=Erda knows the end of the gods.",r:["Erde=earth","Erdgeschoss=ground floor","Erdbeere=strawberry, “earth-berry”"]},
+ {d:"der Ring",l:"ring",e:"the Ring",p:["Ring=ring"],n:"Taken from Fafner in Act 2 and worth, by then, rather less than everyone has paid for it.",x:"Der Ring bringt Macht und Fluch.=The ring brings power and a curse.",r:["Fluch=a curse","Macht=power","Tarnhelm=the shape-changing helm, from tarnen, to disguise"]},
+ {d:"der Stabreim",l:"stave-rhyme",e:"alliterative verse",p:["Stab=stave, staff","Reim=rhyme"],n:"The form the whole libretto is written in — matching initial consonants instead of end rhymes, borrowed from Old Norse and Old English poetry. It's why the text sounds hammered rather than sung, and why so many lines chain on the same letter. Beowulf does the identical thing.",x:"Winterstürme wichen dem Wonnemond.=Winter storms gave way to the moon of bliss. (Die Walküre — four W's in five words)",r:["Reim=rhyme","Vers=verse","Nibelungenlied=the medieval epic Wagner drew on"]}
+]}
+];
+
+/* unseen compounds for the decode drill — deliberately NOT in the deck */
+const DECODE = [
+ {w:"Handschuhe",parts:["Hand=hand","Schuhe=shoes"],a:"gloves",wrong:["handrails","handbags","handshakes"]},
+ {w:"Kühlschrank",parts:["kühl=cool","Schrank=cupboard"],a:"refrigerator",wrong:["air conditioner","freezer aisle","cold storage unit"]},
+ {w:"Krankenwagen",parts:["krank=sick","Wagen=wagon"],a:"ambulance",wrong:["hospital bed","wheelchair","sick leave"]},
+ {w:"Flughafen",parts:["Flug=flight","Hafen=harbour"],a:"airport",wrong:["flight deck","runway","air traffic control"]},
+ {w:"Fernseher",parts:["fern=far","sehen=to see","-er=doer"],a:"television",wrong:["telescope","binoculars","lighthouse"]},
+ {w:"Wörterbuch",parts:["Wörter=words","Buch=book"],a:"dictionary",wrong:["notebook","novel","phrasebook"]},
+ {w:"Zahnarzt",parts:["Zahn=tooth","Arzt=doctor"],a:"dentist",wrong:["orthodontist's chair","toothache","surgeon"]},
+ {w:"Feuerzeug",parts:["Feuer=fire","Zeug=stuff, gear"],a:"cigarette lighter",wrong:["fireplace","fire extinguisher","firewood"]},
+ {w:"Regenschirm",parts:["Regen=rain","Schirm=screen, shield"],a:"umbrella",wrong:["raincoat","awning","gutter"]},
+ {w:"Rolltreppe",parts:["rollen=to roll","Treppe=stairs"],a:"escalator",wrong:["elevator","ramp","moving walkway"]},
+ {w:"Sehenswürdigkeit",parts:["sehen=to see","würdig=worthy","-keit=-ness"],a:"a tourist sight",wrong:["a viewpoint","an observation deck","a photograph"]},
+ {w:"Gepäckaufbewahrung",parts:["Gepäck=luggage","auf=up","bewahren=to keep"],a:"left-luggage office",wrong:["overhead rack","baggage claim","porter service"]},
+ {w:"Kinderwagen",parts:["Kinder=children","Wagen=wagon"],a:"stroller / pram",wrong:["school bus","playground","car seat"]},
+ {w:"Geschwindigkeitsbegrenzung",parts:["Geschwindigkeit=speed","Begrenzung=limiting"],a:"speed limit",wrong:["speed camera","acceleration lane","fast train"]},
+ {w:"Bahnhofsvorplatz",parts:["Bahnhof=station","vor=in front of","Platz=square"],a:"the square in front of the station",wrong:["platform one","station concourse","ticket hall"]},
+ {w:"Nichtraucherabteil",parts:["nicht=not","Raucher=smoker","Abteil=compartment"],a:"non-smoking compartment",wrong:["smoking area","quiet carriage","first class"]},
+ {w:"Fundbüro",parts:["Fund=a find","Büro=office"],a:"lost and found",wrong:["information desk","police station","foundation office"]},
+ {w:"Eisenbahn",parts:["Eisen=iron","Bahn=path"],a:"railway",wrong:["ice rink","iron bridge","tramline"]},
+ {w:"Ausgangssperre",parts:["Ausgang=going-out","Sperre=barrier"],a:"curfew",wrong:["exit gate","road closure","turnstile"]},
+ {w:"Schlafwagen",parts:["schlafen=to sleep","Wagen=wagon"],a:"sleeper car",wrong:["waiting room","dining car","luggage van"]}
+];
+
+/* ---------------- dialogues: the words at speed, inside words you don't know ---------------- */
+const DIALOGE = [
+{t:"Am Fahrkartenschalter",scene:"Buying a ticket at Berlin Hauptbahnhof.",
+ l:[["Sie","Guten Tag. Einmal nach Oberwesel, bitte.","Hello. One ticket to Oberwesel, please."],
+    ["Schalter","Einfach oder hin und zurück?","One way or return?"],
+    ["Sie","Einfach, bitte.","One way, please."],
+    ["Schalter","Sie müssen in Koblenz umsteigen. Ist das in Ordnung?","You'll have to change in Koblenz. Is that all right?"],
+    ["Sie","Ja, das geht. Wie viel kostet das?","Yes, that works. How much is it?"],
+    ["Schalter","Sechsundfünfzig Euro. Bar oder mit Karte?","Fifty-six euros. Cash or card?"],
+    ["Sie","Mit Karte, bitte.","By card, please."],
+    ["Schalter","Danke. Abfahrt vierzehn Uhr zwölf, Gleis sieben.","Thank you. Departure 14:12, platform 7."]],
+ q:"What has the clerk warned you about this journey?",
+ o:["You'll have to change trains in Koblenz","The train is running late","You need a separate seat reservation","The ticket is only valid today"],
+ a:0,
+ why:"Sie müssen in Koblenz umsteigen. And note sechsundfünfzig — six-and-fifty. The small digit lands first, which is exactly where prices get misheard."},
+
+{t:"Durchsage im Bahnhof",scene:"A platform announcement. Nobody repeats it in English.",
+ l:[["Durchsage","Achtung auf Gleis sieben.","Attention on platform 7."],
+    ["Durchsage","Der Regionalexpress nach Koblenz, Abfahrt vierzehn Uhr zwölf, hat heute etwa zwanzig Minuten Verspätung.","The regional express to Koblenz, departing 14:12, is running about twenty minutes late today."],
+    ["Durchsage","Der Zug fährt heute von Gleis drei ab.","The train will depart from platform 3 today."],
+    ["Durchsage","Wir bitten um Ihr Verständnis.","We ask for your understanding."]],
+ q:"What do you actually do?",
+ o:["Move to platform 3 and expect about twenty minutes' wait","Stay on platform 7 — the change is for a different train","Find the replacement bus outside","Nothing; the train was cancelled"],
+ a:0,
+ why:"Two separate pieces of news in one announcement: Verspätung (a delay) and a track change to Gleis drei. Listen for the numbers and the word after von."},
+
+{t:"Im Restaurant",scene:"Evening, no reservation, two of you.",
+ l:[["Kellner","Guten Abend. Haben Sie reserviert?","Good evening. Do you have a reservation?"],
+    ["Sie","Nein, aber wir sind nur zu zweit.","No, but there are only two of us."],
+    ["Kellner","Kein Problem. Bitte, hier ist die Speisekarte.","No problem. Here's the menu."],
+    ["Kellner","Möchten Sie schon etwas trinken?","Would you like something to drink already?"],
+    ["Sie","Zwei Helle, bitte. Und ein Leitungswasser.","Two pale lagers, please. And a tap water."],
+    ["Sie","Ich hätte gern das Tagesgericht. Was ist das heute?","I'd like the daily special. What is it today?"],
+    ["Kellner","Rinderbraten mit Knödeln und Rotkohl.","Roast beef with dumplings and red cabbage."]],
+ q:"What did the waiter ask before seating you?",
+ o:["Whether you had a reservation","How many were in your party","Whether you wanted to sit outside","Whether you'd eaten there before"],
+ a:0,
+ why:"Haben Sie reserviert? — literally “have you reserved?” German uses the bare verb where English wants the noun."},
+
+{t:"Die Rechnung",scene:"Settling up, in cash.",
+ l:[["Sie","Entschuldigung, wir möchten zahlen.","Excuse me, we'd like to pay."],
+    ["Kellner","Gerne. Zusammen oder getrennt?","Of course. Together or separately?"],
+    ["Sie","Zusammen, bitte.","Together, please."],
+    ["Kellner","Das macht dreiunddreißig Euro achtzig.","That comes to €33.80."],
+    ["Sie","Fünfunddreißig, bitte. Stimmt so.","Thirty-five, please. Keep the change."],
+    ["Kellner","Vielen Dank. Schönen Abend noch!","Thank you very much. Have a good evening!"]],
+ q:"How did you tip?",
+ o:["By naming a rounded-up total as you handed over the money","By leaving coins on the table afterwards","By adding a line to the card slip","You didn't — tipping isn't done"],
+ a:0,
+ why:"You say the number you want to pay, then stimmt so. Coins left behind on the table read as forgotten rather than given."},
+
+{t:"An der Rezeption",scene:"Hotel check-in in Baden-Baden.",
+ l:[["Sie","Guten Tag, ich habe eine Reservierung.","Hello, I have a reservation."],
+    ["Rezeption","Willkommen. Zwei Nächte, Doppelzimmer?","Welcome. Two nights, double room?"],
+    ["Sie","Genau.","Exactly."],
+    ["Rezeption","Hier ist Ihre Schlüsselkarte. Zimmer zweihundertvier, im zweiten Stock.","Here's your key card. Room 204, on the second floor."],
+    ["Rezeption","Die Kurtaxe beträgt drei Euro fünfzig pro Person und Nacht.","The spa tax is €3.50 per person per night."],
+    ["Sie","Ab wann gibt es Frühstück?","When does breakfast start?"],
+    ["Rezeption","Ab halb sieben. Der Aufzug ist gleich dort rechts.","From half past six. The lift is just there on the right."]],
+ q:"What time does breakfast open?",
+ o:["6:30","7:30","Half past any hour — she didn't say","7:00"],
+ a:0,
+ why:"halb sieben is 6:30, not 7:30 — German counts half-way toward the coming hour, not back from the last one. This is the single most expensive misunderstanding on the list; it costs you a breakfast or a train."},
+
+{t:"In der Bäckerei",scene:"Morning coffee and rolls, and a small surprise.",
+ l:[["Sie","Guten Morgen. Zwei Brötchen und einen Kaffee, bitte.","Good morning. Two rolls and a coffee, please."],
+    ["Verkäuferin","Gern. Hier oder zum Mitnehmen?","Certainly. For here or to go?"],
+    ["Sie","Zum Mitnehmen, bitte.","To go, please."],
+    ["Verkäuferin","Das macht vier Euro sechzig. Wir nehmen leider nur Bargeld.","That's €4.60. Unfortunately we only take cash."],
+    ["Sie","Kein Problem.","No problem."]],
+ q:"What's the complication?",
+ o:["They take cash only","They're out of rolls","The coffee is for here only","She misheard the order"],
+ a:0,
+ why:"leider = unfortunately, and it is the word that flags bad news politely. Bakeries are the most reliably cash-only places you'll walk into."},
+
+{t:"In der Apotheke",scene:"A headache, and the pharmacist has a question first.",
+ l:[["Sie","Guten Tag. Ich habe Kopfschmerzen. Haben Sie etwas dagegen?","Hello. I have a headache. Do you have something for it?"],
+    ["Apothekerin","Ja. Sind Sie gegen etwas allergisch?","Yes. Are you allergic to anything?"],
+    ["Sie","Nein.","No."],
+    ["Apothekerin","Dann nehmen Sie das hier. Das ist rezeptfrei.","Then take this. It's available without a prescription."],
+    ["Apothekerin","Eine Tablette, höchstens dreimal am Tag.","One tablet, at most three times a day."]],
+ q:"What did she check before recommending anything?",
+ o:["Whether you're allergic to anything","Whether you have a prescription","Whether you're insured","How long you've had the headache"],
+ a:0,
+ why:"Kopfschmerzen is “head-pains” — Schmerz is pain, and it builds the lot: Zahnschmerzen, Bauchschmerzen, Rückenschmerzen. dagegen is “against it.”"},
+
+{t:"An der Therme",scene:"Buying entry at a Baden-Baden bath.",
+ l:[["Kasse","Guten Tag. Drei Stunden oder Tageskarte?","Hello. Three hours or a day ticket?"],
+    ["Sie","Drei Stunden, bitte.","Three hours, please."],
+    ["Kasse","Ein Handtuch können Sie hier leihen. In der Sauna gilt Handtuchpflicht.","You can rent a towel here. Towels are compulsory in the sauna."],
+    ["Sie","Und die Umkleide?","And the changing room?"],
+    ["Kasse","Geradeaus, dann links. Die Schließfächer sind gleich daneben.","Straight ahead, then left. The lockers are right next to them."],
+    ["Kasse","Der Saunabereich oben ist textilfrei.","The sauna area upstairs is textile-free."]],
+ q:"What is she telling you about the upstairs area?",
+ o:["No swimwear is worn there","It costs extra","It closes earlier","It's men only"],
+ a:0,
+ why:"Delivered as flatly as the locker directions, because that is how it is treated. gilt is from gelten, to apply or be in force — the same verb behind gültig on your train ticket."},
+
+{t:"In der Oper",scene:"Arriving at the Bayerische Staatsoper.",
+ l:[["Personal","Guten Abend. Ihre Karten, bitte.","Good evening. Your tickets, please."],
+    ["Sie","Bitte schön. Reihe zwölf, Platz sieben und acht.","Here you are. Row 12, seats 7 and 8."],
+    ["Personal","Erster Rang, die Treppe hoch. Mäntel und Taschen bitte an der Garderobe abgeben.","First tier, up the stairs. Please leave coats and bags at the cloakroom."],
+    ["Sie","Wie lange dauert die Pause?","How long is the interval?"],
+    ["Personal","Fünfundzwanzig Minuten, nach dem zweiten Aufzug.","Twenty-five minutes, after the second act."]],
+ q:"When is the interval?",
+ o:["After the second act","After twenty-five minutes","Before the first act","There are two of them"],
+ a:0,
+ why:"Aufzug here is an act, not a lift — the curtain being pulled up. abgeben is “to give off,” to hand something over, and the Garderobe is not optional."},
+
+{t:"Nach dem Weg fragen",scene:"Lost in the old town, asking a passer-by.",
+ l:[["Sie","Entschuldigung, wie komme ich zum Bahnhof?","Excuse me, how do I get to the station?"],
+    ["Passant","Immer geradeaus, dann an der Kirche rechts.","Straight on, then right at the church."],
+    ["Sie","Ist es weit?","Is it far?"],
+    ["Passant","Nein, zehn Minuten zu Fuß.","No, ten minutes on foot."],
+    ["Sie","Können Sie das bitte wiederholen? Langsamer, bitte.","Could you repeat that please? More slowly."],
+    ["Passant","Ge-rade-aus … dann rechts an der Kirche.","Straight … ahead … then right at the church."]],
+ q:"Where do you turn?",
+ o:["Right, at the church","Left, at the church","Right, after ten minutes","Left, at the station"],
+ a:0,
+ why:"immer geradeaus is literally “always straight-out” — keep going. And the last two lines are the most useful thing in this whole app: asking for it again, slower, works every time."}
+];
+
+/* ============================== state ============================== */
+const KEY = "deutsch-trainer-v1";
+let S = {seen:{}, miss:{}, right:{}, dlg:{}};
+let view = "home", unit = 1, idx = 0, revealed = false;
+let quizPool = [], quizN = 0, quizScore = 0, quizQ = null, quizUnits = new Set();
+let decodeQ = null, decodeN = 0, decodeScore = 0;
+let dlgSel = null, dlgShowAll = false;
+
+async function load(){
+  try{ const r = await window.storage.get(KEY); if(r&&r.value) S = Object.assign({seen:{},miss:{},right:{},dlg:{}}, JSON.parse(r.value)); }
+  catch(e){ /* first run — nothing saved yet */ }
+}
+let saveTimer;
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async ()=>{
+    try{ await window.storage.set(KEY, JSON.stringify(S)); }catch(e){}
+  }, 400);
+}
+
+const cardId = (u,i)=> u+"-"+i;
+const allCards = ()=> UNITS.flatMap((u,ui)=> u.cards.map((c,ci)=>({...c, ui, ci, id:cardId(ui,ci)})));
+function unitPct(ui){
+  const n = UNITS[ui].cards.length; if(!n) return null;
+  let s=0; for(let i=0;i<n;i++) if(S.seen[cardId(ui,i)]) s++;
+  return Math.round(100*s/n);
+}
+function totalPct(){
+  const all = allCards(); if(!all.length) return 0;
+  return Math.round(100*all.filter(c=>S.seen[c.id]).length/all.length);
+}
+
+/* ============================== board ============================== */
+function setFlaps(text){
+  const el = document.getElementById("flaps");
+  el.innerHTML = "";
+  [...text.toUpperCase()].slice(0,14).forEach((ch,i)=>{
+    const d = document.createElement("div");
+    d.className = "flap" + (ch===" " ? " sp" : "");
+    d.textContent = ch===" " ? "" : ch;
+    d.style.animationDelay = (i*35)+"ms";
+    el.appendChild(d);
+  });
+}
+function updateBoard(sub){
+  const days = Math.max(0, Math.ceil((new Date("2026-10-17T00:00:00") - new Date())/86400000));
+  document.getElementById("countdown").textContent = days + " Tage";
+  document.getElementById("progbar").style.width = totalPct()+"%";
+  if(sub) document.getElementById("boardsub").textContent = sub;
+}
+
+/* ============================== speech ============================== */
+let voice = null, deVoices = [];
+function pickVoice(){
+  deVoices = speechSynthesis.getVoices().filter(x=>x.lang && x.lang.toLowerCase().startsWith("de"));
+  voice = deVoices[0] || null;
+}
+if("speechSynthesis" in window){
+  pickVoice();
+  speechSynthesis.onvoiceschanged = ()=>{ pickVoice(); if(view==="dialog") render(); };
+}
+
+/* play a whole scene: one utterance at a time, chained on onend, so long
+   dialogues don't stall the way a queued batch does in some browsers */
+let playing = false, playTimer = null, slowMode = false;
+function stopPlay(){
+  playing = false; clearTimeout(playTimer);
+  if("speechSynthesis" in window) speechSynthesis.cancel();
+  document.querySelectorAll(".dl.now").forEach(e=>e.classList.remove("now"));
+  const b = document.getElementById("play"); if(b) b.textContent = "▶ Play the scene";
+}
+function playDialog(d){
+  if(!("speechSynthesis" in window)) return;
+  stopPlay(); playing = true;
+  const b = document.getElementById("play"); if(b) b.textContent = "■ Stop";
+  let i = 0;
+  const step = ()=>{
+    if(!playing) return;
+    document.querySelectorAll(".dl.now").forEach(e=>e.classList.remove("now"));
+    if(i >= d.l.length){ stopPlay(); return; }
+    const el = document.querySelector('.dl[data-i="'+i+'"]');
+    if(el){
+      el.classList.add("now");
+      el.scrollIntoView({block:"center", behavior:"smooth"});
+    }
+    const u = new SpeechSynthesisUtterance(d.l[i][1]);
+    u.lang = "de-DE";
+    const second = d.l[i][0] !== "Sie";          /* you vs the other person */
+    if(deVoices.length > 1) u.voice = deVoices[second ? 1 : 0];
+    else if(voice){ u.voice = voice; u.pitch = second ? 0.85 : 1.12; }
+    u.rate = slowMode ? 0.62 : 0.85;
+    const advance = ()=>{ if(!playing) return; i++; playTimer = setTimeout(step, 430); };
+    u.onend = advance; u.onerror = advance;
+    speechSynthesis.speak(u);
+  };
+  step();
+}
+
+function say(text, done){
+  if(!("speechSynthesis" in window)){ if(done) done(); return; }
+  playing = false; clearTimeout(playTimer);
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.replace(/\s*\/\s*/g," , ").replace(/…/g,""));
+  u.lang = "de-DE"; if(voice) u.voice = voice;
+  u.rate = slowMode ? 0.62 : 0.85;
+  if(done){ u.onend = done; u.onerror = done; }
+  speechSynthesis.speak(u);
+}
+
+/* ============================== render ============================== */
+const main = document.getElementById("main");
+const esc = s => String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const relHTML = r => !r||!r.length ? "" :
+  '<div class="rel"><div class="rel-h">Related words</div><ul>'+r.map(x=>{
+    const i=x.indexOf("="); return '<li><b>'+esc(x.slice(0,i))+'</b> &mdash; '+x.slice(i+1)+'</li>';
+  }).join("")+'</ul></div>';
+const exHTML = x => { if(!x) return ""; const i=x.indexOf("=");
+  return '<div class="ex" data-de="'+esc(x.slice(0,i))+'">'+
+    '<div class="ex-de">'+esc(x.slice(0,i))+'</div>'+
+    '<div class="ex-en">'+esc(x.slice(i+1))+'</div>'+
+    '<button class="ex-play" aria-label="Say this sentence" title="Say this sentence">&#9654;</button>'+
+  '</div>'; };
+/* any .ex on screen speaks its German and lights up while it does */
+function wireEx(root){
+  (root||main).querySelectorAll(".ex").forEach(el=>{
+    el.onclick = ()=>{
+      document.querySelectorAll(".ex.now").forEach(e=>e.classList.remove("now"));
+      el.classList.add("now");
+      say(el.dataset.de, ()=> el.classList.remove("now"));
+    };
+  });
+}
+const partsHTML = p => !p||!p.length ? "" :
+  '<div class="parts">'+p.map(x=>{const[a,b]=x.split("=");return '<span class="part"><b>'+esc(a)+'</b> · '+esc(b||"")+'</span>';}).join("")+'</div>';
+
+function render(){
+  if(view==="home") renderHome();
+  else if(view==="learn") UNITS[unit].kind==="tools" ? renderTools() : renderLearn();
+  else if(view==="quiz") renderQuiz();
+  else if(view==="decode") renderDecode();
+  else if(view==="dialog") renderDialog();
+  else if(view==="zettel") renderZettel();
+  document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-current", String(b.dataset.view===view)));
+  window.scrollTo(0,0);
+}
+
+function renderHome(){
+  setFlaps("GLEISE");
+  updateBoard("Berlin · Oberwesel · Köln · Baden-Baden · München");
+  main.innerHTML =
+    '<h2>Pick a track</h2>'+
+    '<p class="lede">Gleis 0 first — it makes every other track cheaper. After that, any order you like.</p>'+
+    UNITS.map((u,i)=>{
+      const pct = unitPct(i);
+      return '<button class="gleis" data-unit="'+i+'">'+
+        '<span class="g-num'+(i===0?' zero':'')+'">'+i+'</span>'+
+        '<span><span class="g-de">'+esc(u.de)+'</span><br><span class="g-en">'+esc(u.en)+'</span></span>'+
+        '<span class="g-pct">'+(pct===null?"—":(u.cards.length+" · "+pct+"%"))+'</span></button>';
+    }).join("")+
+    '<div class="row"><button class="btn" id="resetbtn">Reset progress</button></div>';
+
+  main.querySelectorAll(".gleis").forEach(b=>b.onclick=()=>{ unit=+b.dataset.unit; idx=0; revealed=false; view="learn"; render(); });
+  main.querySelector("#resetbtn").onclick = ()=>{ S={seen:{},miss:{},right:{},dlg:{}}; save(); render(); };
+}
+
+function renderTools(){
+  setFlaps("WERKZEUG");
+  updateBoard("Three systems · then everything else is cheaper");
+  main.innerHTML = `
+  <h2>The decoder ring</h2>
+  <p class="lede">Three patterns. Learn these and several hundred words come free — including ones nobody taught you.</p>
+
+  <h3>1 · Compounds read backwards</h3>
+  <p>German welds nouns together and the <b>last one is the thing</b>. Everything in front of it is description. So <b>Fahrkartenautomat</b> is an <i>Automat</i> — for <i>Karten</i> — for <i>Fahren</i>. A ticket machine.</p>
+  <p>Work right to left and almost any monster on a sign comes apart: <b>Schienen·ersatz·verkehr</b> → traffic, that is a replacement, for rails. Rail replacement bus.</p>
+  <p>The compounds are also the place where German is at its most literal-minded, and occasionally its funniest:</p>
+  <table>
+    <tr><td><b>Glühbirne</b><br><i>glow-pear</i></td><td>light bulb</td></tr>
+    <tr><td><b>Staubsauger</b><br><i>dust-sucker</i></td><td>vacuum cleaner</td></tr>
+    <tr><td><b>Bürgersteig</b><br><i>citizen-climb</i></td><td>sidewalk</td></tr>
+    <tr><td><b>Drehtür</b><br><i>turn-door</i></td><td>revolving door</td></tr>
+    <tr><td><b>Speisewagen</b><br><i>food-wagon</i></td><td>dining car</td></tr>
+    <tr><td><b>Fingerhut</b><br><i>finger-hat</i></td><td>thimble</td></tr>
+    <tr><td><b>Waschbär</b><br><i>wash-bear</i></td><td>raccoon</td></tr>
+    <tr><td><b>Schildkröte</b><br><i>shield-toad</i></td><td>turtle</td></tr>
+    <tr><td><b>Warteschlange</b><br><i>waiting-snake</i></td><td>queue</td></tr>
+  </table>
+  <p>Two structural notes that save you guessing. First, <b>a linking letter often shows up at the seam</b> — the <i>-n-</i> in Fahrkarte<b>n</b>automat, the <i>-s-</i> in Bahnhof<b>s</b>vorplatz. It carries no meaning; it's mortar. Ignore it when you're taking a word apart.</p>
+  <p>Second, <b>the last element sets the gender</b>. You don't need genders to travel, but it means <i>die</i> Karte plus <i>der</i> Automat gives you <i>der</i> Fahrkartenautomat — the head noun wins, in grammar exactly as in meaning.</p>
+
+  <h3>2 · Prefixes do the work of verbs</h3>
+  <p>Three stems plus six small prefixes build most of a train station. There are eighteen words in the table below, but only nine things to learn — six prefixes and three stems. Everything else is multiplication.</p>
+  <table>
+    <tr><th></th><th>steigen<br><span style="font-weight:400;text-transform:none;letter-spacing:0">climb</span></th><th>fahren<br><span style="font-weight:400;text-transform:none;letter-spacing:0">travel</span></th><th>Gang<br><span style="font-weight:400;text-transform:none;letter-spacing:0">a going</span></th></tr>
+    <tr><td><b>ein-</b> in</td><td>einsteigen<br><i>board</i></td><td>Einfahrt<br><i>driveway; train pulling in</i></td><td>Eingang<br><i>entrance</i></td></tr>
+    <tr><td><b>aus-</b> out</td><td>aussteigen<br><i>get off</i></td><td>Ausfahrt<br><i>exit</i></td><td>Ausgang<br><i>exit</i></td></tr>
+    <tr><td><b>um-</b> around</td><td>umsteigen<br><i>change trains</i></td><td>Umfahrung<br><i>bypass road</i></td><td>Umgang<br><i>dealing with</i></td></tr>
+    <tr><td><b>ab-</b> off</td><td>absteigen<br><i>dismount</i></td><td>Abfahrt<br><i>departure</i></td><td>Abgang<br><i>exit, departure</i></td></tr>
+    <tr><td><b>an-</b> on, at</td><td>ansteigen<br><i>rise</i></td><td>anfahren<br><i>pull away</i></td><td>Anschluss<br><i>connection</i></td></tr>
+    <tr><td><b>zu-</b> to, shut</td><td>zusteigen<br><i>board en route</i></td><td>Zufahrt<br><i>access road</i></td><td>Zutritt<br><i>admittance</i></td></tr>
+  </table>
+  <p>The same six prefixes reappear on other stems: <i>Tritt</i> (a step), <i>Schluss</i> (a closing), <i>Lass</i> (a letting), <i>Kunft</i> (a coming). That last one pays off twice in a station — <b>Auskunft</b>, the out-coming, is the information desk, and <b>Unterkunft</b>, the under-coming, is where you're sleeping tonight.</p>
+
+  <h3>3 · English is German with a sound shift</h3>
+  <p>Around the 6th century, southern German consonants moved and English's didn't. The correspondences are regular, which means you can often <b>decode a word you have never seen</b>.</p>
+  <table>
+    <tr><th>English</th><th>becomes</th><th>Examples</th></tr>
+    <tr><td class="shift">t</td><td class="shift">z, tz, ss</td><td class="shift">two→zwei · ten→zehn · to→zu · water→Wasser · eat→essen · heart→Herz · foot→Fuß</td></tr>
+    <tr><td class="shift">p</td><td class="shift">pf, f</td><td class="shift">apple→Apfel · path→Pfad · plum→Pflaume · ship→Schiff · sleep→schlafen · help→helfen</td></tr>
+    <tr><td class="shift">k</td><td class="shift">ch</td><td class="shift">make→machen · book→Buch · break→brechen · seek→suchen</td></tr>
+    <tr><td class="shift">th</td><td class="shift">d</td><td class="shift">three→drei · thank→danken · thing→Ding · brother→Bruder</td></tr>
+    <tr><td class="shift">d</td><td class="shift">t</td><td class="shift">day→Tag · do→tun · drink→trinken · deep→tief · door→Tür</td></tr>
+  </table>
+  <p>So when a menu offers <b>Pfeffer</b>, or a sign warns of a <b>Tiefgarage</b>, you already know: pepper, and a deep garage — underground parking.</p>
+
+  <p><b>When can you trust it?</b> There's a real pattern, and it's about how old the word is. The shift is reliable on the <b>oldest, most concrete layer of vocabulary</b> — body parts, family, animals, weather, food staples, numbers, basic physical verbs. Those words have been in both languages continuously since before the split, so they shifted on schedule and kept their meaning. <i>Hand, Finger, Bruder, Wetter, Milch, Brot, trinken, schlafen, Tür, Wasser.</i> Decode freely.</p>
+
+  <p>It goes quiet on abstract and institutional vocabulary, for a reason that's really about 1066. English took its formal register from Norman French — <i>receive, comprehend, permit, mutton</i> — while German built its own out of native parts instead. There's no cognate to shift, because English replaced the word. That's why <i>verstehen</i> and <i>comprehend</i> look nothing alike but <i>stand</i> and <i>stehen</i> are obviously the same.</p>
+
+  <p><b>And there are three places it actively lies to you.</b></p>
+  <p>The first has a visible tell. If a German word <i>looks Latin</i> — endings in <b>-ell, -ion, -tät, -ieren, -ismus</b> — it's a borrowing, not a cognate. The sound shift has nothing to say about it, and both languages have been free to drift. This is the densest false-friend zone in the language.</p>
+  <p>The second is nastier: real cognates whose <i>meanings</i> wandered. The sound law works perfectly and hands you the wrong word anyway. <b>Gift</b> is the classic — it's genuinely the noun of <i>geben</i>, "that which is given," but what German means by it is a dose of poison.</p>
+  <p>The third is pseudo-English: words that look borrowed from English and aren't used that way by anyone in England. <b>Handy</b> is a mobile phone. A <b>Beamer</b> is a projector. A <b>Smoking</b> is a dinner jacket.</p>
+  <table>
+    <tr><th>Looks like</th><th>Actually means</th></tr>
+    <tr><td><b>bekommen</b></td><td>to receive, not to become. <i>Ich bekomme ein Bier</i> = I'll have a beer</td></tr>
+    <tr><td><b>Menü</b></td><td>a fixed set meal. The list of dishes is the <i>Speisekarte</i></td></tr>
+    <tr><td><b>Chef</b></td><td>the boss. A cook is a <i>Koch</i></td></tr>
+    <tr><td><b>Rezept</b></td><td>a recipe <i>and</i> a prescription</td></tr>
+    <tr><td><b>Gift</b></td><td>poison</td></tr>
+    <tr><td><b>aktuell</b></td><td>current, up to date — not actual</td></tr>
+    <tr><td><b>eventuell</b></td><td>possibly — not eventually</td></tr>
+    <tr><td><b>sensibel</b></td><td>sensitive — not sensible</td></tr>
+    <tr><td><b>Kaution</b></td><td>a security deposit — not caution</td></tr>
+    <tr><td><b>fast</b></td><td>almost. <i>Fast fertig</i> = nearly done</td></tr>
+    <tr><td><b>bald</b></td><td>soon</td></tr>
+    <tr><td><b>Rock</b></td><td>a skirt</td></tr>
+  </table>
+  <p>The working rule: <b>the more concrete and everyday the thing, the more you can trust the decode.</b> A word for something you could point at is usually safe. A word for a concept, an institution, or a feeling deserves a second look.</p>
+
+  <h3>4 · Beginnings that carry meaning</h3>
+  <table>
+    <tr><td><b>ver-</b></td><td>gone wrong or gone away — <i>verlaufen</i>, to walk astray</td></tr>
+    <tr><td><b>ge-</b></td><td>gathered together — <i>Gepäck</i>, the packed things</td></tr>
+    <tr><td><b>ent-</b></td><td>un-, de- — <i>entwerten</i>, to strip of value</td></tr>
+    <tr><td><b>Haupt-</b></td><td>chief — <i>Hauptbahnhof</i>, <i>Hauptgericht</i></td></tr>
+  </table>
+
+  <h3>5 · Endings that carry meaning</h3>
+  <table>
+    <tr><td><b>-ung</b></td><td>makes a verb into a noun — <i>Umleitung</i>, a leading-around</td></tr>
+    <tr><td><b>-chen / -lein / -erl</b></td><td>little — <i>Brötchen</i>, little bread. <i>-erl</i> is Austrian</td></tr>
+    <tr><td><b>-frei</b></td><td>free of it — <i>textilfrei</i>, <i>zuckerfrei</i></td></tr>
+    <tr><td><b>-pflicht</b></td><td>required — <i>Handtuchpflicht</i>, towel obligatory</td></tr>
+    <tr><td><b>-los</b></td><td>-less — <i>kostenlos</i>, cost-less = free</td></tr>
+    <tr><td><b>-keit / -heit</b></td><td>-ness — <i>Sehenswürdigkeit</i>, seeing-worthi-ness</td></tr>
+  </table>
+  <p class="lede" style="margin-top:24px">That's the whole toolkit. Go to <b>Zerlegen</b> and try it on words that aren't in any of these decks.</p>
+  <div class="row"><button class="btn" id="togo">Try the decoder →</button><button class="btn ghost" id="tohome">Back to the board</button></div>`;
+  main.querySelector("#togo").onclick = ()=>{ view="decode"; decodeQ=null; decodeN=0; decodeScore=0; render(); };
+  main.querySelector("#tohome").onclick = ()=>{ view="home"; render(); };
+}
+
+function renderLearn(){
+  const u = UNITS[unit], c = u.cards[idx], id = cardId(unit,idx);
+  S.seen[id]=1; save();
+  setFlaps(u.de);
+  updateBoard(u.en + " · " + u.cards.length + " Karten");
+  const tone = /verboten|Vorsicht|Achtung|Notausgang|Kein|fällt aus|Hilfe|Notruf|Textilfrei/.test(c.d) ? "warn" : (c.s ? "say" : "");
+  main.innerHTML =
+    (idx===0 && u.intro ? '<p class="lede">'+u.intro+'</p>' : '')+
+    '<div class="card">'+
+      '<div class="card-sign '+tone+'"><span class="de">'+esc(c.d)+'</span>'+
+        '<button class="speak" id="say" title="Say it" aria-label="Pronounce">▶</button></div>'+
+      '<div class="card-body">'+
+        '<div class="lit">literally · <b>'+esc(c.l)+'</b></div>'+
+        '<div class="means">'+esc(c.e)+'</div>'+
+        exHTML(c.x)+
+        partsHTML(c.p)+
+        (c.n? '<div class="note">'+c.n+'</div>' : '')+
+        relHTML(c.r)+
+      '</div>'+
+    '</div>'+
+    (c.s? '<p class="lede">When: '+esc(c.s)+'</p>' : '')+
+    '<div class="pager">'+
+      '<button class="btn ghost" id="prev">←</button>'+
+      '<span class="count">'+(idx+1)+' / '+u.cards.length+'</span>'+
+      '<button class="btn" id="next">'+(idx+1===u.cards.length?"Quiz this track":"Weiter →")+'</button>'+
+    '</div>';
+  main.querySelector("#say").onclick = ()=> say(c.d);
+  wireEx();
+  main.querySelector("#prev").onclick = ()=>{ if(idx>0){idx--;render();} else {view="home";render();} };
+  main.querySelector("#next").onclick = ()=>{
+    if(idx+1<u.cards.length){ idx++; render(); }
+    else { quizUnits = new Set([unit]); view="quiz"; quizQ=null; quizN=0; quizScore=0; render(); }
+  };
+}
+
+/* ---------------- quiz ---------------- */
+function buildPool(){
+  const sel = quizUnits.size ? [...quizUnits] : UNITS.map((_,i)=>i).filter(i=>UNITS[i].cards.length);
+  quizPool = allCards().filter(c=>sel.includes(c.ui));
+}
+function weightedPick(){
+  // favour cards you've missed, and cards you haven't been asked yet
+  const w = quizPool.map(c=> 1 + 3*(S.miss[c.id]||0) - 0.5*Math.min(2,(S.right[c.id]||0)));
+  const tot = w.reduce((a,b)=>a+Math.max(.2,b),0);
+  let r = Math.random()*tot;
+  for(let i=0;i<quizPool.length;i++){ r -= Math.max(.2,w[i]); if(r<=0) return quizPool[i]; }
+  return quizPool[quizPool.length-1];
+}
+function newQuizQ(){
+  const c = weightedPick();
+  const askSituation = c.s && Math.random()<.45;
+  const others = quizPool.filter(x=>x.id!==c.id).sort(()=>Math.random()-.5).slice(0,3);
+  let opts;
+  if(askSituation){ opts = [c, ...others].map(x=>({t:x.d, ok:x.id===c.id})); }
+  else{ opts = [c, ...others].map(x=>({t:x.e, ok:x.id===c.id})); }
+  quizQ = {c, askSituation, opts: opts.sort(()=>Math.random()-.5), answered:false};
+}
+function renderQuiz(){
+  if(!quizPool.length || !quizQ){ buildPool(); if(!quizPool.length){ quizUnits=new Set(); buildPool(); } newQuizQ(); }
+  setFlaps("QUIZ");
+  updateBoard("Missed cards come back more often");
+  const q = quizQ;
+  main.innerHTML =
+    '<div class="chips no-print">'+UNITS.map((u,i)=> u.cards.length?
+      '<button class="chip" data-u="'+i+'" aria-pressed="'+(quizUnits.has(i))+'">'+esc(u.de)+'</button>':"").join("")+
+      '<button class="chip" data-u="all" aria-pressed="'+(quizUnits.size===0)+'">Alles</button></div>'+
+    '<div class="score">'+quizScore+' / '+quizN+'</div>'+
+    '<div class="prompt">'+
+      (q.askSituation
+        ? '<div class="q-tag">Was sagst du?</div><div class="q-sit">'+esc(q.c.s)+'</div>'
+        : '<div class="q-tag">Was heißt das?</div><div class="q-de">'+esc(q.c.d)+'</div>')+
+    '</div>'+
+    q.opts.map((o,i)=>'<button class="opt" data-i="'+i+'">'+esc(o.t)+'</button>').join("")+
+    '<div id="fb"></div>';
+
+  main.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{
+    if(b.dataset.u==="all") quizUnits = new Set();
+    else { const i=+b.dataset.u; quizUnits.has(i)?quizUnits.delete(i):quizUnits.add(i); }
+    buildPool(); newQuizQ(); render();
+  });
+  main.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    if(q.answered) return; q.answered=true;
+    const o = q.opts[+b.dataset.i];
+    quizN++;
+    if(o.ok){ quizScore++; S.right[q.c.id]=(S.right[q.c.id]||0)+1; }
+    else{ S.miss[q.c.id]=(S.miss[q.c.id]||0)+1; }
+    save();
+    main.querySelectorAll(".opt").forEach((btn,i)=>{
+      btn.disabled = true;
+      if(q.opts[i].ok) btn.classList.add("right");
+      else if(i===+b.dataset.i) btn.classList.add("wrong");
+    });
+    const c = q.c;
+    document.getElementById("fb").innerHTML =
+      '<div class="feedback"><div class="lit">'+esc(c.d)+' · literally <b>'+esc(c.l)+'</b></div>'+exHTML(c.x)+
+      partsHTML(c.p)+(c.n?'<div class="note">'+c.n+'</div>':'')+relHTML(c.r)+'</div>'+
+      '<div class="row"><button class="btn" id="nx">Nächste →</button>'+
+      '<button class="btn ghost" id="sp">Say it</button></div>';
+    wireEx(document.getElementById("fb"));
+    document.getElementById("nx").onclick = ()=>{ newQuizQ(); render(); };
+    document.getElementById("sp").onclick = ()=> say(c.d);
+    document.getElementById("nx").focus();
+  });
+}
+
+/* ---------------- decode ---------------- */
+function renderDecode(){
+  if(!decodeQ){
+    const d = DECODE[Math.floor(Math.random()*DECODE.length)];
+    decodeQ = {d, opts:[{t:d.a,ok:true},...d.wrong.map(w=>({t:w,ok:false}))].sort(()=>Math.random()-.5), answered:false, hint:false};
+  }
+  setFlaps("ZERLEGEN");
+  updateBoard("Words that are in none of the decks");
+  const q = decodeQ;
+  main.innerHTML =
+    '<p class="lede">None of these are in your decks. Take them apart.</p>'+
+    '<div class="score">'+decodeScore+' / '+decodeN+'</div>'+
+    '<div class="prompt"><div class="q-tag">Was heißt das?</div><div class="q-de">'+esc(q.d.w)+'</div></div>'+
+    (q.hint||q.answered ? partsHTML(q.d.parts) : '<div class="row"><button class="btn ghost" id="hint">Show the parts</button></div>')+
+    q.opts.map((o,i)=>'<button class="opt" data-i="'+i+'">'+esc(o.t)+'</button>').join("")+
+    '<div id="fb2"></div>';
+  const h = main.querySelector("#hint"); if(h) h.onclick = ()=>{ q.hint=true; render(); };
+  main.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    if(q.answered) return; q.answered=true; decodeN++;
+    const ok = q.opts[+b.dataset.i].ok; if(ok) decodeScore++;
+    main.querySelectorAll(".opt").forEach((btn,i)=>{
+      btn.disabled=true;
+      if(q.opts[i].ok) btn.classList.add("right");
+      else if(i===+b.dataset.i) btn.classList.add("wrong");
+    });
+    document.getElementById("fb2").innerHTML =
+      '<div class="feedback">'+partsHTML(q.d.parts)+'<div class="means">'+esc(q.d.w)+' = '+esc(q.d.a)+'</div></div>'+
+      '<div class="row"><button class="btn" id="nx2">Nächste →</button></div>';
+    document.getElementById("nx2").onclick = ()=>{ decodeQ=null; render(); };
+    document.getElementById("nx2").focus();
+  });
+}
+
+/* ---------------- dialogues ---------------- */
+function renderDialog(){
+  setFlaps("DIALOGE");
+  document.body.classList.toggle("showall", dlgShowAll);
+  if(dlgSel===null){
+    const done = Object.keys(S.dlg||{}).length;
+    updateBoard("Ten scenes you will actually be standing in");
+    main.innerHTML = '<h2>Conversations</h2>'+
+      '<p class="lede">The words you know, arriving at speed inside words you don\'t. Tap any line to hear it and reveal the English. '+done+' of '+DIALOGE.length+' answered.</p>'+
+      DIALOGE.map((d,i)=>'<button class="gleis" data-d="'+i+'">'+
+        '<span class="g-num">'+(i+1)+'</span>'+
+        '<span><span class="g-de">'+esc(d.t)+'</span><br><span class="g-en">'+esc(d.scene)+'</span></span>'+
+        '<span class="g-pct">'+((S.dlg&&S.dlg[i])?"✓":"")+'</span></button>').join("");
+    main.querySelectorAll(".gleis").forEach(b=>b.onclick=()=>{ dlgSel=+b.dataset.d; render(); });
+    return;
+  }
+  const d = DIALOGE[dlgSel];
+  updateBoard(d.scene);
+  main.innerHTML =
+    '<h2>'+esc(d.t)+'</h2><p class="scene">'+esc(d.scene)+'</p>'+
+    '<div class="row">'+
+      '<button class="btn" id="play">▶ Play the scene</button>'+
+      '<button class="btn ghost" id="slow" aria-pressed="'+slowMode+'">'+(slowMode?"Slow ✓":"Slow")+'</button>'+
+      '<button class="btn ghost" id="toggle">'+(dlgShowAll?"Hide the English":"Show all English")+'</button>'+
+    '</div>'+
+    (("speechSynthesis" in window) && deVoices.length===0
+      ? '<p class="vhint">No German voice is installed on this device, so playback will be silent or heavily accented.</p>' : '')+
+    d.l.map((l,i)=>'<div class="dl" data-i="'+i+'" data-de="'+esc(l[1])+'">'+
+      '<div class="dwho">'+esc(l[0])+'</div>'+
+      '<div class="dde">'+esc(l[1])+'</div>'+
+      '<div class="den">'+esc(l[2])+'</div></div>').join("")+
+    '<div class="prompt" style="margin-top:22px"><div class="q-tag">Verstanden?</div><div class="q-sit">'+esc(d.q)+'</div></div>'+
+    d.o.map((o,i)=>'<button class="opt" data-o="'+i+'">'+esc(o)+'</button>').join("")+
+    '<div id="fb3"></div>'+
+    '<div class="pager"><button class="btn ghost" id="back">← Alle</button>'+
+    '<span class="count">'+(dlgSel+1)+' / '+DIALOGE.length+'</span>'+
+    '<button class="btn" id="nxd">Weiter →</button></div>';
+
+  main.querySelector("#play").onclick = ()=>{ playing ? stopPlay() : playDialog(d); };
+  main.querySelector("#slow").onclick = ()=>{ slowMode=!slowMode; stopPlay(); render(); };
+  main.querySelector("#toggle").onclick = ()=>{ dlgShowAll=!dlgShowAll; stopPlay(); render(); };
+  main.querySelector("#back").onclick = ()=>{ stopPlay(); dlgSel=null; render(); };
+  main.querySelector("#nxd").onclick = ()=>{ stopPlay(); dlgSel=(dlgSel+1)%DIALOGE.length; render(); };
+  main.querySelectorAll(".dl").forEach(el=>el.onclick=()=>{ el.classList.toggle("open"); say(el.dataset.de); });
+  main.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    if(b.disabled) return;
+    const pick = +b.dataset.o;
+    main.querySelectorAll(".opt").forEach((btn,i)=>{
+      btn.disabled = true;
+      if(i===d.a) btn.classList.add("right");
+      else if(i===pick) btn.classList.add("wrong");
+    });
+    S.dlg = S.dlg || {}; S.dlg[dlgSel] = (pick===d.a) ? 1 : 0; save();
+    document.getElementById("fb3").innerHTML = '<div class="feedback"><div class="note">'+d.why+'</div></div>';
+  });
+}
+
+/* ---------------- pocket card ---------------- */
+const ZETTEL = [
+ ["Entschuldigung","excuse me"],["bitte","please / here you go / pardon?"],["danke","thanks"],
+ ["Sprechen Sie Englisch?","do you speak English?"],["Ich verstehe nicht","I don't understand"],
+ ["Langsamer, bitte","more slowly please"],["Wie viel kostet das?","how much is that?"],
+ ["Ich hätte gern …","I'd like …"],["Wo ist …?","where is …?"],["Hilfe!","help!"],
+ ["Ausgang / Eingang","exit / entrance"],["Notausgang","emergency exit"],
+ ["Drücken / Ziehen","push / pull"],["Geöffnet / Geschlossen","open / closed"],
+ ["Vorsicht / Achtung","caution / watch out"],["Kein Zutritt","no entry"],
+ ["Umleitung","detour"],["Baustelle","construction"],["Kasse","till / ticket desk"],
+ ["Nur Bargeld","cash only"],["Erdgeschoss","ground floor (E or 0)"],
+ ["Gleis","platform / track no."],["Abfahrt / Ankunft","departure / arrival"],
+ ["Verspätung","delay"],["fällt aus","cancelled"],["umsteigen","change trains"],
+ ["Anschluss","connection"],["Ersatzverkehr","replacement bus"],["entwerten","stamp/validate ticket"],
+ ["Richtung","bound for"],["Ausstieg links/rechts","exit left/right"],["Endstation","end of the line"],
+ ["Speisekarte","menu"],["Die Rechnung, bitte","the bill, please"],
+ ["Zusammen oder getrennt?","one bill or separate?"],["Stimmt so","keep the change"],
+ ["Zum Mitnehmen","to go"],["Leitungswasser","tap water"],["Pfand","bottle deposit"],
+ ["Ich habe eine Reservierung","I have a reservation"],["Kurtaxe","spa tax"],
+ ["Gepäck","luggage"],["links / rechts / geradeaus","left / right / straight on"],
+ ["Ich habe mich verlaufen","I'm lost"],["Notruf 112","emergency 112"],
+ ["Textilfrei","nude area — no swimwear"],["Schließfach","locker"],["Ruhebereich","quiet room"],
+ ["Garderobe","coat check (mandatory)"],["Einlass","doors open"],["Pause","interval"],
+ ["Reihe / Platz","row / seat"],["Grüß Gott / Servus","hello (Bavaria & Austria)"]
+];
+function renderZettel(){
+  setFlaps("ZETTEL");
+  updateBoard("Print it · fits a pocket · works with no signal");
+  main.innerHTML =
+    '<h2>Pocket card</h2>'+
+    '<p class="lede no-print">The 53 things worth having on paper. Print this page — the rest of the app drops away.</p>'+
+    '<div class="zettel">'+ZETTEL.map(z=>'<div><b>'+esc(z[0])+'</b><br><i>'+esc(z[1])+'</i></div>').join("")+'</div>'+
+    '<div class="row no-print"><button class="btn" id="pr">Print</button></div>';
+  main.querySelector("#pr").onclick = ()=> window.print();
+}
+
+/* ============================== boot ============================== */
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+  if(typeof stopPlay === "function") stopPlay();
+  view = b.dataset.view;
+  if(view==="learn" && UNITS[unit].cards.length===0 && UNITS[unit].kind!=="tools"){ unit=1; idx=0; }
+  render();
+});
+load().then(render);
+</script>
